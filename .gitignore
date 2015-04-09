@@ -17,6 +17,28 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+#Other
+*.csproj
+*.config
+*.sln
+*.xml
+*.exe
+*.dll
+*.pdb
+*.manifest
+*.cache
+*.Cache
+*.jpg
+*TemporaryGeneratedFile*.cs
+*FileListAbsolute.txt
+*.uml
+*.resx
+*.layout
+*.png
+*.resources
+*.modelproj
+*.classdiagram
+
 # =========================
 # Operating System Files
 # =========================
