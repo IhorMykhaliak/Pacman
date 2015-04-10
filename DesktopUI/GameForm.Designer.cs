@@ -38,9 +38,9 @@
             this.menu.BackColor = System.Drawing.Color.Transparent;
             this.menu.Image = global::Pacman.DesktopUI.Properties.Resources.menu;
             this.menu.InitialImage = null;
-            this.menu.Location = new System.Drawing.Point(-2, -3);
+            this.menu.Location = new System.Drawing.Point(-2, -4);
             this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(652, 662);
+            this.menu.Size = new System.Drawing.Size(652, 663);
             this.menu.TabIndex = 0;
             this.menu.TabStop = false;
             // 

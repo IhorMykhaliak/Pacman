@@ -30,7 +30,7 @@ namespace Pacman.DesktopUI
             _game = new Game();
 
             Paint += Draw;
-            _game.Update += Refresh;
+            _game.Update += UpdateGame;
             menu.Visible = true;
         }
 
@@ -75,6 +75,12 @@ namespace Pacman.DesktopUI
             _game.IsPaused = !_game.IsPaused;
             menu.Visible = _game.IsPaused;
          }
+
+        private void UpdateGame()
+        {
+            // here score and time ++ in labels
+            Refresh();
+        }
 
         private void Draw(object sender, PaintEventArgs e)
         {

@@ -8,8 +8,10 @@ namespace Pacman.GameEngine
 {
     class Clyde : Ghost
     {
-        public Clyde(Grid grid, int x, int y, float size)
-            : base(grid, x, y, size)
+        #region Initialization
+
+        public Clyde(Player pacman, Grid grid, int x, int y, float size)
+            : base(pacman, grid, x, y, size)
         {
             _name = "Clyde";
         }
@@ -21,56 +23,38 @@ namespace Pacman.GameEngine
             PatrolPath.AddRange(AStarAlgorithm.CalculatePath(_level.Map[12, 30], StartCell, _level.Map));
         }
 
-        public override void UpdateChasePath(Player pacman)
+        #endregion
+
+        #region Behaviour
+
+        public override void UpdateChasePath()
         {
             int xDistance, yDistance, distance;
 
-            xDistance = Math.Abs(GetX() - pacman.GetX());
-            yDistance = Math.Abs(GetY() - pacman.GetY());
+            xDistance = Math.Abs(GetX() - _pacman.GetX());
+            yDistance = Math.Abs(GetY() - _pacman.GetY());
             distance = xDistance + yDistance;
 
             if (distance > 8)
             {
-                UseNormalPath(pacman);
+                base.UpdateChasePath();
             }
             else
             {
-                UseStupidPath(pacman);
+                UseStupidPath();
             }
         }
 
-        private void UseNormalPath(Player pacman)
-        {
-            List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), pacman.CurrentCell(), _level.Map);
-            _pathIterator = 0;
-
-            if (bestPath.Count >= chasePathLength)
-            {
-                _chasePath = bestPath.GetRange(0, chasePathLength);
-            }
-            else
-            {
-                _chasePath = bestPath;
-            }
-
-            _targetCell = _chasePath.Last();
-        }
-
-        private void UseStupidPath(Player pacman)
+        private void UseStupidPath()
         {
             List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), _level.GetRandomEmptyCell(), _level.Map);
             _pathIterator = 0;
 
-            if (bestPath.Count >= chasePathLength)
-            {
-                _chasePath = bestPath.GetRange(0, chasePathLength);
-            }
-            else
-            {
-                _chasePath = bestPath;
-            }
+            SelectChasePath(bestPath);
 
             _targetCell = _chasePath.Last();
         }
+
+        #endregion
     }
 }

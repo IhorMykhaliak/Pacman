@@ -69,11 +69,16 @@ namespace Pacman.GameEngine
             }
         }
 
+        // see if I need set here
         public Timer MainTimer
         {
             get
             {
                 return _mainTimer;
+            }
+            set
+            {
+                _mainTimer = value;
             }
         }
 
@@ -121,10 +126,10 @@ namespace Pacman.GameEngine
         private void InitializeGhosts()
         {
             _ghosts = new List<Ghost>();
-            _ghosts.Add(new Blinky(_level, 18, 15, size));
-            _ghosts.Add(new Pinky(_level, 17, 15, size));
-            _ghosts.Add(new Inky(_level, 18, 14, size));
-            _ghosts.Add(new Clyde(_level, 17, 14, size));
+            _ghosts.Add(new Blinky(_pacman, _level, 18, 15, size));
+            _ghosts.Add(new Pinky(_pacman, _level, 17, 15, size));
+            _ghosts.Add(new Inky(_pacman, _level, 18, 14, size));
+            _ghosts.Add(new Clyde(_pacman, _level, 17, 14, size));
 
             _ghosts[0].StartCell = _level.Map[27, 2];
             _ghosts[1].StartCell = _level.Map[6, 2];
@@ -326,7 +331,7 @@ namespace Pacman.GameEngine
         {
             if (ghost.TargetCell == ghost.CurrentCell())
             {
-                ghost.UpdateChasePath(_pacman);
+                ghost.UpdateChasePath();
             }
 
             ghost.ChaseTime -= _deltaTime;

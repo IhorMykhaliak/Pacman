@@ -8,8 +8,10 @@ namespace Pacman.GameEngine
 {
     class Blinky : Ghost
     {
-        public Blinky(Grid grid, int x, int y, float size)
-            : base(grid, x, y, size)
+        #region Initialization
+
+        public Blinky(Player pacman, Grid grid, int x, int y, float size)
+            : base(pacman, grid, x, y, size)
         {
             _name = "Blinky";
         }
@@ -21,42 +23,48 @@ namespace Pacman.GameEngine
             PatrolPath.AddRange(AStarAlgorithm.CalculatePath(_level.Map[28, 6], StartCell, _level.Map));
         }
 
-        public override void UpdateChasePath(Player pacman)
+        #endregion
+
+        #region Behaviour
+
+        public override void UpdateChasePath()
         {
-            List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), pacman.CurrentCell(), _level.Map);
-            _pathIterator = 0;
+            base.UpdateChasePath();
 
-            if (bestPath.Count >= chasePathLength)
-            {
-                _chasePath = bestPath.GetRange(0, chasePathLength);
-            }
-            else
-            {
-                _chasePath = bestPath;
-            }
-
-            CheckTunnel(pacman);
+            CheckTunnel();
         }
 
-        private void CheckTunnel(Player pacman)
+        private void CheckTunnel()
         {
-            if (pacman.IsPassedRightTunnel)
+            if (_pacman.IsPassedRightTunnel)
             {
-                _chasePath = AStarAlgorithm.CalculatePath(CurrentCell(), _level.Map[33, 15], _level.Map);
-                _targetCell = _level.Map[0, 15];
-                pacman.IsPassedRightTunnel = false;
+                ChaseRightTunnel();
             }
             else
-                if (pacman.IsPassedLeftTunnel)
+                if (_pacman.IsPassedLeftTunnel)
                 {
-                    _chasePath = AStarAlgorithm.CalculatePath(CurrentCell(), _level.Map[0, 15], _level.Map);
-                    _targetCell = _level.Map[32, 15];
-                    pacman.IsPassedLeftTunnel = false;
+                    ChaseLeftTunnel();
                 }
                 else
                 {
                     _targetCell = _chasePath.Last();
                 }
         }
+
+        private void ChaseLeftTunnel()
+        {
+            _chasePath = AStarAlgorithm.CalculatePath(CurrentCell(), _level.Map[0, 15], _level.Map);
+            _targetCell = _level.Map[32, 15];
+            _pacman.IsPassedLeftTunnel = false;
+        }
+
+        private void ChaseRightTunnel()
+        {
+            _chasePath = AStarAlgorithm.CalculatePath(CurrentCell(), _level.Map[33, 15], _level.Map);
+            _targetCell = _level.Map[0, 15];
+            _pacman.IsPassedRightTunnel = false;
+        }
+
+        #endregion
     }
 }

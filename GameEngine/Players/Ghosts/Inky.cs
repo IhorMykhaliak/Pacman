@@ -8,7 +8,16 @@ namespace Pacman.GameEngine
 {
     class Inky : Ghost
     {
+        #region Fields
+
+        private int _xShift;
+        private int _yShift;
+        private int _distance = 2;
         private Blinky _blinky;
+
+        #endregion
+
+        #region Properties
 
         public Blinky Blinky
         {
@@ -18,8 +27,12 @@ namespace Pacman.GameEngine
             }
         }
 
-        public Inky(Grid grid, int x, int y, float size)
-            : base(grid, x, y, size)
+        #endregion
+
+        #region Initialization
+
+        public Inky(Player pacman, Grid grid, int x, int y, float size)
+            : base(pacman, grid, x, y, size)
         {
             _name = "Inky";
         }
@@ -31,103 +44,87 @@ namespace Pacman.GameEngine
             PatrolPath.AddRange(AStarAlgorithm.CalculatePath(_level.Map[23, 30], StartCell, _level.Map));
         }
 
-        public override void UpdateChasePath(Player pacman)
+        #endregion
+
+        private Cell CalculateOffsetCell()
         {
-            List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), CalculateTargetCell(pacman), _level.Map);
-            _pathIterator = 0;
-
-            if (bestPath.Count >= chasePathLength)
-            {
-                _chasePath = bestPath.GetRange(0, chasePathLength);
-            }
-            else
-            {
-                _chasePath = bestPath;
-            }
-
-            _targetCell = _chasePath.Last();
-        }
-
-        private Cell CalculateOffsetCell(Player pacman)
-        {
-            int distance = 2;
             Cell offsetCell = new Cell();
             offsetCell.Content = Content.Wall;
 
             while (offsetCell.IsWall())
             {
-                switch (pacman.Direction)
+                switch (_pacman.Direction)
                 {
-                    case Direction.Up: offsetCell = _level.Map[pacman.GetX(), pacman.GetY() - distance];
+                    case Direction.Up: offsetCell = _level.Map[_pacman.GetX(), _pacman.GetY() - _distance];
                         break;
-                    case Direction.Down: offsetCell = _level.Map[pacman.GetX(), pacman.GetY() + distance];
+                    case Direction.Down: offsetCell = _level.Map[_pacman.GetX(), _pacman.GetY() + _distance];
                         break;
                     case Direction.Left:
                         {
-                            if (pacman.GetX() - distance > 0)
+                            if (_pacman.GetX() - _distance > 0)
                             {
-                                offsetCell = _level.Map[pacman.GetX() - distance, pacman.GetY()];
+                                offsetCell = _level.Map[_pacman.GetX() - _distance, _pacman.GetY()];
                             }
                             break;
                         }
                     case Direction.Right:
                         {
-                            if (pacman.GetX() + distance < _level.Width - 1)
+                            if (_pacman.GetX() + _distance < _level.Width - 1)
                             {
-                                offsetCell = _level.Map[pacman.GetX() + distance, pacman.GetY()];
+                                offsetCell = _level.Map[_pacman.GetX() + _distance, _pacman.GetY()];
                             }
                             break;
                         }
-                    default: offsetCell = pacman.CurrentCell();
+                    default: offsetCell = _pacman.CurrentCell();
                         break;
                 }
 
-                if (distance == 0)
+                if (_distance == 0)
                 {
-                    offsetCell = pacman.CurrentCell();
+                    offsetCell = _pacman.CurrentCell();
                     break;
                 }
 
-                distance--;
+                _distance--;
             }
 
             return offsetCell;
         }
 
-        private Cell CalculateTargetCell(Player pacman)
+        protected override Cell CalculateTargetCell()
         {
-            Cell offsetCell = CalculateOffsetCell(pacman);
+            Cell offsetCell = CalculateOffsetCell();
             Cell cell;
             int xDistance, yDistance;
 
-            xDistance = pacman.GetX() - _blinky.GetX();
-            yDistance = pacman.GetY() - _blinky.GetY();
+            xDistance = _pacman.GetX() - _blinky.GetX();
+            yDistance = _pacman.GetY() - _blinky.GetY();
 
-            TargetInBounds(pacman, ref xDistance, ref yDistance);
+            TargetInBounds(ref xDistance, ref yDistance);
 
-            cell = _level.Map[pacman.GetX() + xDistance, pacman.GetY() + yDistance];
+            cell = _level.Map[_pacman.GetX() + xDistance, _pacman.GetY() + yDistance];
 
             return TargetEmpty(cell);
         }
 
-        private void TargetInBounds(Player pacman, ref int xDistance, ref int yDistance)
+        private void TargetInBounds(ref int xDistance, ref int yDistance)
         {
-            while (pacman.GetX() + xDistance < 0)
+            while (_pacman.GetX() + xDistance < 0)
             {
                 xDistance++;
             }
 
-            while (pacman.GetX() + xDistance > _level.Width - 1)
+            while (_pacman.GetX() + xDistance > _level.Width - 1)
             {
                 xDistance--;
             }
 
-            while (pacman.GetY() + yDistance < 0)
+            while (_pacman.GetY() + yDistance < 0)
             {
                 yDistance++;
             }
 
-            while (pacman.GetY() + yDistance > _level.Height - 1)
+            while (_pacman.GetY() + yDistance > _level.Height - 1)
             {
                 yDistance--;
             }
@@ -135,31 +132,32 @@ namespace Pacman.GameEngine
 
         private Cell TargetEmpty(Cell cell)
         {
-            int xShift = 0, yShift = 0;
-            int upper;
+            int upperBound;
             int count = 1;
+
+            _xShift = 0;
+            _yShift = 0;
 
             while (cell.IsWall())
             {
                 if (count % 2 == 0)
                 {
-                    xShift = count / 2;
-                    yShift = -xShift;
-                    upper = xShift;
+                    _xShift = count / 2;
+                    _yShift = -_xShift;
+                    upperBound = _xShift;
                 }
                 else
                 {
-                    xShift = -count / 2;
-                    upper = -xShift;
-                    yShift = xShift;
+                    _xShift = -count / 2;
+                    upperBound = -_xShift;
+                    _yShift = _xShift;
                 }
 
-                for (; yShift <= upper; yShift++)
+                for (; _yShift <= upperBound; _yShift++)
                 {
-                    if (cell.GetX() + xShift > 0 && cell.GetX() + xShift < _level.Width &&
-                        cell.GetY() + yShift > 0 && cell.GetY() + yShift < _level.Height)
+                    if (IsShiftedInBounds(cell))
                     {
-                        cell = _level.Map[cell.GetX() + xShift, cell.GetY() + yShift];
+                        cell = _level.Map[cell.GetX() + _xShift, cell.GetY() + _yShift];
                         if (!cell.IsWall())
                         {
                             return cell;
@@ -171,6 +169,14 @@ namespace Pacman.GameEngine
             }
 
             return cell;
+        }
+
+        private bool IsShiftedInBounds(Cell cell)
+        {
+            return cell.GetX() + _xShift > 0 &&
+                   cell.GetX() + _xShift < _level.Width &&
+                   cell.GetY() + _yShift > 0 &&
+                   cell.GetY() + _yShift < _level.Height;
         }
     }
 }

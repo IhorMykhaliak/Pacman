@@ -20,7 +20,7 @@ $RECYCLE.BIN/
 #Other
 *.csproj
 *.config
-*.sln
+*.suo
 *.xml
 *.exe
 *.dll

@@ -8,8 +8,16 @@ namespace Pacman.GameEngine
 {
     class Pinky : Ghost
     {
-        public Pinky(Grid grid, int x, int y, float size)
-            : base(grid, x, y, size)
+        #region Fields
+
+        private int _distance = 3;
+
+        #endregion
+
+        #region Initialization
+
+        public Pinky(Player pacman, Grid grid, int x, int y, float size)
+            : base(pacman, grid, x, y, size)
         {
             _name = "Pinky";
         }
@@ -21,77 +29,110 @@ namespace Pacman.GameEngine
             PatrolPath.AddRange(AStarAlgorithm.CalculatePath(_level.Map[4, 6], StartCell, _level.Map));
         }
 
-        public override void UpdateChasePath(Player pacman)
+        #endregion
+
+        #region Behaviour
+
+        protected override Cell CalculateTargetCell()
         {
-            List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), CalculateTargetCell(pacman), _level.Map);
-            _pathIterator = 0;
-
-            if (bestPath.Count >= chasePathLength)
-            {
-                _chasePath = bestPath.GetRange(0, chasePathLength);
-            }
-            else
-            {
-                _chasePath = bestPath;
-            }
-
-            _targetCell = _chasePath.Last();
-        }
-
-        private Cell CalculateTargetCell(Player pacman)
-        {
-            int distance = 3;
             Cell cell = new Cell();
             cell.Content = Content.Wall;
 
             while (cell.IsWall())
             {
-                switch (pacman.Direction)
+                switch (_pacman.Direction)
                 {
                     case Direction.Up:
                         {
-                            if (pacman.GetY() - distance > 0)
+                            if (IsUpAvailable())
                             {
-                                cell = _level.Map[pacman.GetX(), pacman.GetY() - distance];
+                                cell = GetUpCell();
                             }
                             break;
                         }
                     case Direction.Down:
                         {
-                            if (pacman.GetY() + distance < _level.Height - 1)
+                            if (IsDownAvailable())
                             {
-                                cell = _level.Map[pacman.GetX(), pacman.GetY() + distance];
+                                cell = GetDownCell();
                             }
                             break;
                         }
                     case Direction.Left:
                         {
-                            if (pacman.GetX() - distance > 0)
+                            if (IsLeftAvailable())
                             {
-                                cell = _level.Map[pacman.GetX() - distance, pacman.GetY()];
+                                cell = GetLeftCell();
                             }
                             break;
                         }
                     case Direction.Right:
                         {
-                            if (pacman.GetX() + distance < _level.Width - 1)
+                            if (IsRightAvailable())
                             {
-                                cell = _level.Map[pacman.GetX() + distance, pacman.GetY()];
+                                cell = GetRightCell();
                             }
                             break;
                         }
-                    default: return pacman.CurrentCell();
+                    default: return _pacman.CurrentCell();
                 }
 
-                if (distance <= 1)
+                if (_distance <= 1)
                 {
-                    return pacman.CurrentCell();
+                    cell = _pacman.CurrentCell();
+                    break;
                 }
 
-                distance--;
+                _distance--;
             }
 
             return cell;
         }
+
+        private Cell GetUpCell()
+        {
+            return _level.Map[_pacman.GetX(), _pacman.GetY() - _distance];
+        }
+
+        private Cell GetDownCell()
+        {
+            return _level.Map[_pacman.GetX(), _pacman.GetY() + _distance];
+        }
+
+        private Cell GetLeftCell()
+        {
+            return _level.Map[_pacman.GetX() - _distance, _pacman.GetY()];
+        }
+
+        private Cell GetRightCell()
+        {
+            return _level.Map[_pacman.GetX() + _distance, _pacman.GetY()];
+        }
+
+        #endregion
+
+        #region Movement constraints
+
+        private bool IsUpAvailable()
+        {
+            return _pacman.GetY() - _distance > 0;
+        }
+
+        private bool IsDownAvailable()
+        {
+            return _pacman.GetY() + _distance < _level.Height - 1;
+        }
+
+        private bool IsLeftAvailable()
+        {
+            return _pacman.GetX() - _distance > 0;
+        }
+
+        private bool IsRightAvailable()
+        {
+            return _pacman.GetX() + _distance < _level.Width - 1;
+        }
+
+        #endregion
     }
 }

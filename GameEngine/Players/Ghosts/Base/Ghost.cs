@@ -39,6 +39,8 @@ namespace Pacman.GameEngine
 
         protected string _name;
 
+        protected Player _pacman;
+
         #endregion
 
         #region Properties
@@ -231,6 +233,12 @@ namespace Pacman.GameEngine
             _homeCell = _level.Map[x - 1, y - 1];
         }
 
+        public Ghost(Player pacman, Grid grid, int x, int y, float size)
+            : this(grid, x, y, size)
+        {
+            _pacman = pacman;
+        }
+
         public abstract void InitializePatrolPath();
 
         #endregion
@@ -382,7 +390,32 @@ namespace Pacman.GameEngine
             _targetCell = _runPath.Last();
         }
 
-        public abstract void UpdateChasePath(Player pacman);
+        public virtual void UpdateChasePath()
+        {
+            List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), CalculateTargetCell(), _level.Map);
+            _pathIterator = 0;
+
+            SelectChasePath(bestPath);
+
+            _targetCell = _chasePath.Last();
+        }
+
+        protected virtual Cell CalculateTargetCell()
+        {
+            return _pacman.CurrentCell();
+        }
+
+        protected void SelectChasePath(List<Cell> path)
+        {
+            if (path.Count >= chasePathLength)
+            {
+                _chasePath = path.GetRange(0, chasePathLength);
+            }
+            else
+            {
+                _chasePath = path;
+            }
+        }
 
         public void DoChasing()
         {
@@ -397,7 +430,6 @@ namespace Pacman.GameEngine
             }
         }
 
-        // refactor
         public void DoReturning()
         {
             if (_returnTime > 0)
@@ -406,20 +438,35 @@ namespace Pacman.GameEngine
             }
             else
             {
-                if (CurrentCell().GetBoundingRect() != _startCell.GetBoundingRect())
+                if (!IsAtStart())
                 {
-                    _targetCell = CurrentCell();
-                    _chaseTime = chaseTime;
-                    _behaviour = Behaviour.Chase;
+                    StartChase();
                 }
             }
 
-            if (CurrentCell().GetBoundingRect() == _startCell.GetBoundingRect())
+            if (IsAtStart())
             {
-                _pathIterator = 0;
-                _patrolTime = patrolTime;
-                _behaviour = Behaviour.Patrol;
+                StartPatrol();
             }
+        }
+
+        private void StartChase()
+        {
+            _targetCell = CurrentCell();
+            _chaseTime = chaseTime;
+            _behaviour = Behaviour.Chase;
+        }
+
+        private void StartPatrol()
+        {
+            _pathIterator = 0;
+            _patrolTime = patrolTime;
+            _behaviour = Behaviour.Patrol;
+        }
+
+        private bool IsAtStart()
+        {
+            return CurrentCell().GetBoundingRect() == _startCell.GetBoundingRect();
         }
 
         #endregion

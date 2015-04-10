@@ -21,7 +21,10 @@ namespace Pacman.ConsoleUI
 
             while (pressedKey.Key != ConsoleKey.Escape)
             {
-                pressedKey = Console.ReadKey(true);
+                if (Console.KeyAvailable)
+                {
+                    pressedKey = Console.ReadKey(true);
+                }
 
                 _game.Player.PreviousDirection = _game.Player.Direction;
                 _game.Player.PendingDirection = Direction.None;
@@ -45,6 +48,8 @@ namespace Pacman.ConsoleUI
                     default: _game.Player.Direction = _game.Player.PreviousDirection;
                         break;
                 }
+
+                Thread.Sleep(100);
 
                 Refresh();
                 WinCheck();
