@@ -8,18 +8,13 @@ namespace Pacman.GameEngine
 {
     class Pinky : Ghost
     {
-        #region Fields
-
-        private int _distance = 3;
-
-        #endregion
-
         #region Initialization
 
         public Pinky(Player pacman, Grid grid, int x, int y, float size)
             : base(pacman, grid, x, y, size)
         {
             _name = "Pinky";
+            _distance = 3;
         }
 
         public override void InitializePatrolPath()
@@ -87,50 +82,6 @@ namespace Pacman.GameEngine
             }
 
             return cell;
-        }
-
-        private Cell GetUpCell()
-        {
-            return _level.Map[_pacman.GetX(), _pacman.GetY() - _distance];
-        }
-
-        private Cell GetDownCell()
-        {
-            return _level.Map[_pacman.GetX(), _pacman.GetY() + _distance];
-        }
-
-        private Cell GetLeftCell()
-        {
-            return _level.Map[_pacman.GetX() - _distance, _pacman.GetY()];
-        }
-
-        private Cell GetRightCell()
-        {
-            return _level.Map[_pacman.GetX() + _distance, _pacman.GetY()];
-        }
-
-        #endregion
-
-        #region Movement constraints
-
-        private bool IsUpAvailable()
-        {
-            return _pacman.GetY() - _distance > 0;
-        }
-
-        private bool IsDownAvailable()
-        {
-            return _pacman.GetY() + _distance < _level.Height - 1;
-        }
-
-        private bool IsLeftAvailable()
-        {
-            return _pacman.GetX() - _distance > 0;
-        }
-
-        private bool IsRightAvailable()
-        {
-            return _pacman.GetX() + _distance < _level.Width - 1;
         }
 
         #endregion

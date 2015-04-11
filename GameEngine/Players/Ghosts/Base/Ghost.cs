@@ -32,6 +32,7 @@ namespace Pacman.GameEngine
         private Cell _homeCell;
         private Cell _startCell;
         protected Cell _targetCell;
+        protected int _distance;
 
         private Behaviour _behaviour;
 
@@ -310,6 +311,30 @@ namespace Pacman.GameEngine
 
         #endregion
 
+        #region Movement constraints
+
+        protected bool IsUpAvailable()
+        {
+            return _pacman.GetY() - _distance > 0;
+        }
+
+        protected bool IsDownAvailable()
+        {
+            return _pacman.GetY() + _distance < _level.Height - 1;
+        }
+
+        protected bool IsLeftAvailable()
+        {
+            return _pacman.GetX() - _distance > 0;
+        }
+
+        protected bool IsRightAvailable()
+        {
+            return _pacman.GetX() + _distance < _level.Width - 1;
+        }
+
+        #endregion
+
         #region Update direction
 
         public void UpdateDirection(Cell other)
@@ -467,6 +492,26 @@ namespace Pacman.GameEngine
         private bool IsAtStart()
         {
             return CurrentCell().GetBoundingRect() == _startCell.GetBoundingRect();
+        }
+
+        protected Cell GetUpCell()
+        {
+            return _level.Map[_pacman.GetX(), _pacman.GetY() - _distance];
+        }
+
+        protected Cell GetDownCell()
+        {
+            return _level.Map[_pacman.GetX(), _pacman.GetY() + _distance];
+        }
+
+        protected Cell GetLeftCell()
+        {
+            return _level.Map[_pacman.GetX() - _distance, _pacman.GetY()];
+        }
+
+        protected Cell GetRightCell()
+        {
+            return _level.Map[_pacman.GetX() + _distance, _pacman.GetY()];
         }
 
         #endregion

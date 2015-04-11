@@ -17,7 +17,7 @@ namespace Pacman.GameEngine
         private bool _isPaused;
         private float _elapsedTime;
         private float _pacmanCoins;
-        private readonly float _deltaTime;
+        private float _deltaTime;
 
         private int _score;
 
@@ -28,6 +28,8 @@ namespace Pacman.GameEngine
         private Grid _level;
 
         private Timer _mainTimer;
+
+        private GameLogic _gameLogic;
 
         #endregion
 
@@ -154,6 +156,24 @@ namespace Pacman.GameEngine
             _mainTimer.Elapsed += new ElapsedEventHandler(MainTimerTick);
         }
 
+        private void InitializeLogic()
+        {
+            _gameLogic = new GameLogic(_pacman, _ghosts, _level, _deltaTime);
+            _gameLogic.PacmanDied += PacmanDie;
+            _gameLogic.GhostDied += GhostDie;
+            _gameLogic.PlayerWin += PlayerWin;
+        }
+
+        private void InitializeGame()
+        {
+            _deltaTime = ((float)(_mainTimer.Interval) / 1000.0f);
+
+            _isPaused = true;
+            _elapsedTime = 0.0f;
+            _pacmanCoins = _pacman.Coins;
+            _score = 0;
+        }
+
         public Game()
         {
             InitializeLevel();
@@ -164,12 +184,9 @@ namespace Pacman.GameEngine
 
             InitializeTimer();
 
-            _deltaTime = ((float)(_mainTimer.Interval) / 1000.0f);
+            InitializeGame();
 
-            _isPaused = true;
-            _elapsedTime = 0.0f;
-            _pacmanCoins = _pacman.Coins;
-            _score = 0;
+            InitializeLogic();
         }
 
         #endregion
@@ -177,6 +194,10 @@ namespace Pacman.GameEngine
         #region Events
 
         public event Action Update;
+
+        public event Action Pause;
+
+        public event Action Win;
 
         #endregion
 
@@ -190,15 +211,16 @@ namespace Pacman.GameEngine
             // Pacman update
             _pacman.Move();
             _pacman.PickItem(_ghosts);
-            PowerUpCheck();
+            _gameLogic.PowerUpCheck();
 
-            // Ghost update
+            // Ghosts update
             foreach (Ghost ghost in _ghosts)
             {
-                GhostCollisionCheck(ghost);
-                GhostBehaviourCheck(ghost);
+                _gameLogic.GhostCollisionCheck(ghost);
+                _gameLogic.GhostBehaviourCheck(ghost);
             }
 
+            _gameLogic.PacmanWinCheck();
             UpdateGame();
         }
 
@@ -210,138 +232,33 @@ namespace Pacman.GameEngine
             }
         }
 
-        public void Pause()
+        public void PauseGame()
         {
             _mainTimer.Enabled = _isPaused;
             _isPaused = !_isPaused;
-        }
-
-        #endregion
-
-        #region Pacman behaviour
-
-        // refactor this
-        private void PowerUpCheck()
-        {
-            if (_pacman.IsPoweredUp)
+            if (Pause != null)
             {
-                _pacman.PowerUpTime -= _deltaTime;
-                if (_pacman.PowerUpTime > 0)
-                {
-                    foreach (Ghost ghost in _ghosts)
-                    {
-                        if (_pacman.PowerUpTime > 1)
-                        {
-                            ghost.IsChanging = false;
-                        }
-                        else
-                            if (_pacman.PowerUpTime > 0)
-                            {
-                                ghost.IsChanging = true;
-                            }
-
-                        ghost.Behaviour = Behaviour.Frightened;
-                    }
-                }
-                else
-                {
-                    PowerDown();
-                }
+                Pause();
             }
         }
 
-        private void PowerDown()
+        public void PlayerWin()
         {
-            _pacman.IsPoweredUp = false;
-            foreach (Ghost ghost in _ghosts)
+            if (Win != null)
             {
-                ghost.TargetCell = ghost.CurrentCell();
-                ghost.Behaviour = Behaviour.Chase;
+                Win();
             }
         }
 
-        // implement pacman die
+        // add picture game over
         private void PacmanDie()
         {
             _mainTimer.Stop();
-            Console.WriteLine("Game over!");
         }
-
-        #endregion
-
-        #region Ghosts behaviour
 
         private void GhostDie(Ghost ghost)
         {
-            ghost.SetX(ghost.HomeCell.GetX() + 1);
-            ghost.SetY(ghost.HomeCell.GetY() + 1);
-            ghost.Direction = Direction.None;
-            ghost.TargetCell = ghost.CurrentCell();
             _score += 200;
-        }
-
-        // change message box
-        private void GhostCollisionCheck(Ghost ghost)
-        {
-            if (_pacman.CurrentCell() == ghost.CurrentCell())
-            {
-                if (ghost.Behaviour != Behaviour.Frightened)
-                {
-                    PacmanDie();
-                }
-                else
-                {
-                    GhostDie(ghost);
-                }
-            }
-        }
-
-        private void GhostBehaviourCheck(Ghost ghost)
-        {
-            switch (ghost.Behaviour)
-            {
-                case Behaviour.Patrol: GhostPatroling(ghost);
-                    break;
-                case Behaviour.Frightened: GhostFrightened(ghost);
-                    break;
-                case Behaviour.Chase: GhostChasing(ghost);
-                    break;
-                case Behaviour.Return: GhostReturning(ghost);
-                    break;
-            }
-        }
-
-        private void GhostPatroling(Ghost ghost)
-        {
-            ghost.PatrolTime -= _deltaTime;
-            ghost.DoPatroling();
-        }
-
-        private void GhostFrightened(Ghost ghost)
-        {
-            if (ghost.TargetCell == ghost.CurrentCell())
-            {
-                ghost.UpdateRunPath(_level.GetRandomEmptyCell());
-            }
-
-            ghost.Run();
-        }
-
-        private void GhostChasing(Ghost ghost)
-        {
-            if (ghost.TargetCell == ghost.CurrentCell())
-            {
-                ghost.UpdateChasePath();
-            }
-
-            ghost.ChaseTime -= _deltaTime;
-            ghost.DoChasing();
-        }
-
-        private void GhostReturning(Ghost ghost)
-        {
-            ghost.ReturnTime -= _deltaTime;
-            ghost.DoReturning();
         }
 
         #endregion
@@ -362,6 +279,8 @@ namespace Pacman.GameEngine
 
             _mainTimer.Elapsed -= MainTimerTick;
             _mainTimer = null;
+
+            _gameLogic = null;
         }
 
         #endregion

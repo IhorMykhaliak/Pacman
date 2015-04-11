@@ -9,12 +9,12 @@ namespace Pacman.ConsoleUI
 {
     class Drawing
     {
-        public static void DrawCell(Cell cell)
+        private static void DrawCell(Cell cell)
         {
             DrawContent(cell);
         }
 
-        public static void DrawContent(Cell cell)
+        private static void DrawContent(Cell cell)
         {
             switch (cell.Content)
             {
@@ -29,28 +29,28 @@ namespace Pacman.ConsoleUI
             }
         }
 
-        public static void DrawWall(Cell cell)
+        private static void DrawWall(Cell cell)
         {
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.SetCursorPosition(cell.GetX(), cell.GetY());
             Console.Write('█');
         }
 
-        public static void DrawCoin(Cell cell)
+        private static void DrawCoin(Cell cell)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.SetCursorPosition(cell.GetX(), cell.GetY());
             Console.Write('o');
         }
 
-        public static void DrawPowerUp(Cell cell)
+        private static void DrawPowerUp(Cell cell)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.SetCursorPosition(cell.GetX(), cell.GetY());
             Console.Write('p');
         }
 
-        public static void DrawPacman(Player pacman)
+        private static void DrawPacman(Player pacman)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition((int)((pacman.GetLeft() + pacman.Size / 2) / (pacman.Size)),
@@ -58,7 +58,7 @@ namespace Pacman.ConsoleUI
             Console.Write('*');
         }
 
-        public static void DrawGhost(Ghost ghost)
+        private static void DrawGhost(Ghost ghost)
         {
             ConsoleColor color;
             switch (ghost.Behaviour)
@@ -79,7 +79,7 @@ namespace Pacman.ConsoleUI
             Console.Write('*');
         }
 
-        public static void DrawLevel(Grid grid)
+        private static void DrawLevel(Grid grid)
         {
             for (int i = 0; i < grid.Width; i++)
             {
@@ -87,6 +87,16 @@ namespace Pacman.ConsoleUI
                 {
                     DrawCell(grid.Map[i, j]);
                 }
+            }
+        }
+
+        public static void DrawGame(Game game)
+        {
+            DrawLevel(game.Level);
+            DrawPacman(game.Player);
+            foreach (Ghost ghost in game.Ghosts)
+            {
+                DrawGhost(ghost);
             }
         }
     }

@@ -15,11 +15,14 @@ namespace Pacman.DesktopUI
     {
         private Game _game;
 
+        // problem with threads
         public GameForm()
         {
             InitializeComponent();
-            //Control.CheckForIllegalCrossThreadCalls = false;
+            System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
         }
+
+        #region Event handlers
 
         private void GameLoad(object sender, EventArgs e)
         {
@@ -28,9 +31,9 @@ namespace Pacman.DesktopUI
             MaximizeBox = false;
 
             _game = new Game();
+            GameSubscribe();
 
             Paint += Draw;
-            _game.Update += UpdateGame;
             menu.Visible = true;
         }
 
@@ -49,7 +52,7 @@ namespace Pacman.DesktopUI
                     break;
                 case Keys.Right: _game.Player.Direction = Direction.Right;
                     break;
-                case Keys.Space: Pause();
+                case Keys.Space: _game.PauseGame();
                     break;
                 case Keys.R: Restart();
                     break;
@@ -59,37 +62,58 @@ namespace Pacman.DesktopUI
         private void Restart()
         {
             Paint -= Draw;
-            _game.Update -= Refresh;
+            GameUnsubscribe();
+
             _game.Dispose();
             _game = new Game();
+            
             _game.IsPaused = false;
             menu.Visible = false;
             _game.MainTimer.Enabled = true;
+            
             Paint += Draw;
-            _game.Update += Refresh;
+            GameSubscribe();
         }
 
         private void Pause()
          {
-            _game.MainTimer.Enabled = _game.IsPaused;
-            _game.IsPaused = !_game.IsPaused;
             menu.Visible = _game.IsPaused;
          }
 
+        // here score increase in label
         private void UpdateGame()
         {
-            // here score and time ++ in labels
+            // here score increase in label
             Refresh();
+        }
+
+        // add picture instead of message box ?
+        private void PlayerWin()
+        {
+            Restart();
+            _game.PauseGame();
+            MessageBox.Show("You won !");
         }
 
         private void Draw(object sender, PaintEventArgs e)
         {
-            Drawing.DrawLevel(_game.Level, sender, e);
-            Drawing.DrawPacman(_game.Player, sender, e);
-            foreach (Ghost ghost in _game.Ghosts)
-            {
-                Drawing.DrawGhost(ghost, sender, e);
-            }
+            Drawing.DrawGame(_game, sender, e);
+        }
+
+        #endregion
+
+        private void GameSubscribe()
+        {
+            _game.Update += UpdateGame;
+            _game.Pause += Pause;
+            _game.Win += PlayerWin;
+        }
+
+        private void GameUnsubscribe()
+        {
+            _game.Update -= UpdateGame;
+            _game.Pause -= Pause;
+            _game.Win -= PlayerWin;
         }
     }
 }

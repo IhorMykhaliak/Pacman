@@ -51,7 +51,7 @@ namespace Pacman.DesktopUI
                                  (int)cell.Size / 2);
         }
 
-        public static void DrawCell(Cell cell, object sender, PaintEventArgs e)
+        private static void DrawCell(Cell cell, object sender, PaintEventArgs e)
         {
             switch (cell.Content)
             {
@@ -66,22 +66,22 @@ namespace Pacman.DesktopUI
             }
         }
 
-        public static void DrawWall(Cell cell, object sender, PaintEventArgs e)
+        private static void DrawWall(Cell cell, object sender, PaintEventArgs e)
         {
             e.Graphics.FillRectangle(Brushes.Blue, WallDrawingRect(cell));
         }
 
-        public static void DrawCoin(Cell cell, object sender, PaintEventArgs e)
+        private static void DrawCoin(Cell cell, object sender, PaintEventArgs e)
         {
             e.Graphics.FillEllipse(Brushes.White, CoinDrawingRect(cell));
         }
 
-        public static void DrawPowerUp(Cell cell, object sender, PaintEventArgs e)
+        private static void DrawPowerUp(Cell cell, object sender, PaintEventArgs e)
         {
             e.Graphics.FillEllipse(Brushes.LightYellow, PowerUpDrawingRect(cell));
         }
 
-        public static void DrawPacman(Player pacman, object sender, PaintEventArgs e)
+        private static void DrawPacman(Player pacman, object sender, PaintEventArgs e)
         {
             Image image = Pacman.DesktopUI.Properties.Resources.pacman;
             switch (pacman.Direction)
@@ -96,7 +96,7 @@ namespace Pacman.DesktopUI
             e.Graphics.DrawImage(image, CharacterDrawingRect(pacman));
         }
 
-        public static void DrawGhost(Ghost ghost, object sender, PaintEventArgs e)
+        private static void DrawGhost(Ghost ghost, object sender, PaintEventArgs e)
         {
             Image image;
 
@@ -131,7 +131,7 @@ namespace Pacman.DesktopUI
             e.Graphics.DrawImage(image, CharacterDrawingRect(ghost));
         }
 
-        public static void DrawLevel(Grid grid, object sender, PaintEventArgs e)
+        private static void DrawLevel(Grid grid, object sender, PaintEventArgs e)
         {
             for (int i = 0; i < grid.Width; i++)
             {
@@ -139,6 +139,16 @@ namespace Pacman.DesktopUI
                 {
                     DrawCell(grid.Map[i, j], sender, e);
                 }
+            }
+        }
+
+        public static void DrawGame(Game game, object sender, PaintEventArgs e)
+        {
+            DrawLevel(game.Level, sender, e);
+            DrawPacman(game.Player, sender, e);
+            foreach (Ghost ghost in game.Ghosts)
+            {
+                DrawGhost(ghost, sender, e);
             }
         }
     }

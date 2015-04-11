@@ -16,6 +16,7 @@ namespace Pacman.ConsoleUI
         {
             Console.CursorVisible = false;
             _game = new Game();
+            GameSubscribe();
 
             ConsoleKeyInfo pressedKey = new ConsoleKeyInfo();
 
@@ -39,7 +40,7 @@ namespace Pacman.ConsoleUI
                         break;
                     case ConsoleKey.RightArrow: _game.Player.Direction = Direction.Right;
                         break;
-                    case ConsoleKey.Spacebar: _game.Pause();
+                    case ConsoleKey.Spacebar: _game.PauseGame();
                         break;
                     case ConsoleKey.R: Restart();
                         break;
@@ -49,10 +50,11 @@ namespace Pacman.ConsoleUI
                         break;
                 }
 
+                pressedKey = new ConsoleKeyInfo();
+
                 Thread.Sleep(100);
 
                 Refresh();
-                WinCheck();
             }
 
             Console.Clear();
@@ -63,8 +65,11 @@ namespace Pacman.ConsoleUI
         {
             if (!_game.IsPaused)
             {
+                GameUnsubscribe();
                 _game.Dispose();
                 _game = new Game();
+                GameSubscribe();
+                
                 _game.IsPaused = false;
                 _game.MainTimer.Enabled = true;
                 Refresh();
@@ -73,29 +78,34 @@ namespace Pacman.ConsoleUI
 
         private static void Refresh()
         {
-            Console.Clear();
             if (!_game.IsPaused)
             {
+                Console.Clear();
                 Draw();
             }
         }
 
         private static void Draw()
         {
-            Drawing.DrawLevel(_game.Level);
-            Drawing.DrawPacman(_game.Player);
-            foreach (Ghost ghost in _game.Ghosts)
-            {
-                Drawing.DrawGhost(ghost);
-            }
+            Drawing.DrawGame(_game);
         }
 
-        private static void WinCheck()
+        private static void PlayerWin()
         {
-            if (_game.Player.Coins == _game.Level.Coins)
-            {
-                Console.WriteLine("You won !");
-            }
+            _game.PauseGame();
+            Console.Clear();
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine("You won !");
+        }
+
+        private static void GameSubscribe()
+        {
+            _game.Win += PlayerWin;
+        }
+
+        private static void GameUnsubscribe()
+        {
+            _game.Win -= PlayerWin;
         }
     }
 }

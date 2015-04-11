@@ -12,7 +12,10 @@ namespace Pacman.GameEngine
 
         private int _xShift;
         private int _yShift;
-        private int _distance = 2;
+
+        private int _xDistance;
+        private int _yDistance;
+
         private Blinky _blinky;
 
         #endregion
@@ -35,6 +38,7 @@ namespace Pacman.GameEngine
             : base(pacman, grid, x, y, size)
         {
             _name = "Inky";
+            _distance = 2;
         }
 
         public override void InitializePatrolPath()
@@ -46,6 +50,8 @@ namespace Pacman.GameEngine
 
         #endregion
 
+        #region Behaviour
+
         private Cell CalculateOffsetCell()
         {
             Cell offsetCell = new Cell();
@@ -55,23 +61,23 @@ namespace Pacman.GameEngine
             {
                 switch (_pacman.Direction)
                 {
-                    case Direction.Up: offsetCell = _level.Map[_pacman.GetX(), _pacman.GetY() - _distance];
+                    case Direction.Up: offsetCell = GetUpCell();
                         break;
-                    case Direction.Down: offsetCell = _level.Map[_pacman.GetX(), _pacman.GetY() + _distance];
+                    case Direction.Down: offsetCell = GetDownCell();
                         break;
                     case Direction.Left:
                         {
-                            if (_pacman.GetX() - _distance > 0)
+                            if (IsLeftAvailable())
                             {
-                                offsetCell = _level.Map[_pacman.GetX() - _distance, _pacman.GetY()];
+                                offsetCell = GetLeftCell();
                             }
                             break;
                         }
                     case Direction.Right:
                         {
-                            if (_pacman.GetX() + _distance < _level.Width - 1)
+                            if (IsRightAvailable())
                             {
-                                offsetCell = _level.Map[_pacman.GetX() + _distance, _pacman.GetY()];
+                                offsetCell = GetRightCell();
                             }
                             break;
                         }
@@ -95,38 +101,57 @@ namespace Pacman.GameEngine
         {
             Cell offsetCell = CalculateOffsetCell();
             Cell cell;
-            int xDistance, yDistance;
 
-            xDistance = _pacman.GetX() - _blinky.GetX();
-            yDistance = _pacman.GetY() - _blinky.GetY();
+            _xDistance = _pacman.GetX() - _blinky.GetX();
+            _yDistance = _pacman.GetY() - _blinky.GetY();
 
-            TargetInBounds(ref xDistance, ref yDistance);
+            TargetInBounds();
 
-            cell = _level.Map[_pacman.GetX() + xDistance, _pacman.GetY() + yDistance];
+            cell = _level.Map[_pacman.GetX() + _xDistance, _pacman.GetY() + _yDistance];
 
             return TargetEmpty(cell);
         }
 
-        private void TargetInBounds(ref int xDistance, ref int yDistance)
+        private void TargetInBounds()
         {
-            while (_pacman.GetX() + xDistance < 0)
-            {
-                xDistance++;
-            }
+            LeftBoundShift();
 
-            while (_pacman.GetX() + xDistance > _level.Width - 1)
-            {
-                xDistance--;
-            }
+            RightBoundShift();
 
-            while (_pacman.GetY() + yDistance < 0)
-            {
-                yDistance++;
-            }
+            DownBoundShift();
 
-            while (_pacman.GetY() + yDistance > _level.Height - 1)
+            UpBoundShift();
+        }
+
+        private void LeftBoundShift()
+        {
+            while (_pacman.GetX() + _xDistance < 0)
             {
-                yDistance--;
+                _xDistance++;
+            }
+        }
+
+        private void RightBoundShift()
+        {
+            while (_pacman.GetX() + _xDistance > _level.Width - 1)
+            {
+                _xDistance--;
+            }
+        }
+
+        private void DownBoundShift()
+        {
+            while (_pacman.GetY() + _yDistance < 0)
+            {
+                _yDistance++;
+            }
+        }
+
+        private void UpBoundShift()
+        {
+            while (_pacman.GetY() + _yDistance > _level.Height - 1)
+            {
+                _yDistance--;
             }
         }
 
@@ -140,24 +165,13 @@ namespace Pacman.GameEngine
 
             while (cell.IsWall())
             {
-                if (count % 2 == 0)
-                {
-                    _xShift = count / 2;
-                    _yShift = -_xShift;
-                    upperBound = _xShift;
-                }
-                else
-                {
-                    _xShift = -count / 2;
-                    upperBound = -_xShift;
-                    _yShift = _xShift;
-                }
+                upperBound = CalculateUpperBound(count);
 
                 for (; _yShift <= upperBound; _yShift++)
                 {
                     if (IsShiftedInBounds(cell))
                     {
-                        cell = _level.Map[cell.GetX() + _xShift, cell.GetY() + _yShift];
+                        ShiftCell(ref cell);
                         if (!cell.IsWall())
                         {
                             return cell;
@@ -178,5 +192,32 @@ namespace Pacman.GameEngine
                    cell.GetY() + _yShift > 0 &&
                    cell.GetY() + _yShift < _level.Height;
         }
+
+        private int CalculateUpperBound(int count)
+        {
+            int bound;
+
+            if (count % 2 == 0)
+            {
+                _xShift = count / 2;
+                _yShift = -_xShift;
+                bound = _xShift;
+            }
+            else
+            {
+                _xShift = -count / 2;
+                bound = -_xShift;
+                _yShift = _xShift;
+            }
+
+            return bound;
+        }
+
+        private void ShiftCell(ref Cell cell)
+        {
+            cell = _level.Map[cell.GetX() + _xShift, cell.GetY() + _yShift];
+        }
+
+        #endregion
     }
 }

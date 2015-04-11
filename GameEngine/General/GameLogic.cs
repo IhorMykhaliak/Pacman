@@ -1,0 +1,189 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
+using System.IO;
+
+namespace Pacman.GameEngine
+{
+    class GameLogic
+    {
+        #region Fields
+
+        private Player _pacman;
+        private List<Ghost> _ghosts;
+        private Grid _level;
+        private float _deltaTime;
+
+        #endregion
+
+        #region Initialization
+
+
+        public GameLogic(Player pacman, List<Ghost> ghosts, Grid level, float deltaTime)
+        {
+            this._pacman = pacman;
+            this._ghosts = ghosts;
+            this._level = level;
+            this._deltaTime = deltaTime;
+        }
+
+        #endregion
+
+        #region Events
+
+        public event Action PacmanDied;
+
+        public event Action<Ghost> GhostDied;
+
+        public event Action PlayerWin;
+
+        #endregion
+
+        #region Pacman behaviour
+
+        // refactor this
+        public void PowerUpCheck()
+        {
+            if (_pacman.IsPoweredUp)
+            {
+                _pacman.PowerUpTime -= _deltaTime;
+                if (_pacman.PowerUpTime > 0)
+                {
+                    foreach (Ghost ghost in _ghosts)
+                    {
+                        if (_pacman.PowerUpTime > 1)
+                        {
+                            ghost.IsChanging = false;
+                        }
+                        else
+                            if (_pacman.PowerUpTime > 0)
+                            {
+                                ghost.IsChanging = true;
+                            }
+
+                        ghost.Behaviour = Behaviour.Frightened;
+                    }
+                }
+                else
+                {
+                    PowerDown();
+                }
+            }
+        }
+
+        private void PowerDown()
+        {
+            _pacman.IsPoweredUp = false;
+            foreach (Ghost ghost in _ghosts)
+            {
+                ghost.TargetCell = ghost.CurrentCell();
+                ghost.Behaviour = Behaviour.Chase;
+            }
+        }
+
+        private void PacmanDie()
+        {
+            if (PacmanDied != null)
+            {
+                PacmanDied();
+            }
+        }
+
+        public void PacmanWinCheck()
+        {
+            if (PlayerWin != null && IsPlayerWinner())
+            {
+                PlayerWin();
+            }
+        }
+
+        private bool IsPlayerWinner()
+        {
+            return _pacman.Coins == _level.Coins;
+        }
+
+        #endregion
+
+        #region Ghosts behaviour
+
+        public void GhostDie(Ghost ghost)
+        {
+            ghost.SetX(ghost.HomeCell.GetX() + 1);
+            ghost.SetY(ghost.HomeCell.GetY() + 1);
+            ghost.Direction = Direction.None;
+            ghost.TargetCell = ghost.CurrentCell();
+            if (GhostDied != null)
+            {
+                GhostDied(ghost);
+            }
+        }
+
+        public void GhostCollisionCheck(Ghost ghost)
+        {
+            if (_pacman.CurrentCell() == ghost.CurrentCell())
+            {
+                if (ghost.Behaviour != Behaviour.Frightened)
+                {
+                    PacmanDie();
+                }
+                else
+                {
+                    GhostDie(ghost);
+                }
+            }
+        }
+
+        public void GhostBehaviourCheck(Ghost ghost)
+        {
+            switch (ghost.Behaviour)
+            {
+                case Behaviour.Patrol: GhostPatroling(ghost);
+                    break;
+                case Behaviour.Frightened: GhostFrightened(ghost);
+                    break;
+                case Behaviour.Chase: GhostChasing(ghost);
+                    break;
+                case Behaviour.Return: GhostReturning(ghost);
+                    break;
+            }
+        }
+
+        private void GhostPatroling(Ghost ghost)
+        {
+            ghost.PatrolTime -= _deltaTime;
+            ghost.DoPatroling();
+        }
+
+        private void GhostFrightened(Ghost ghost)
+        {
+            if (ghost.TargetCell == ghost.CurrentCell())
+            {
+                ghost.UpdateRunPath(_level.GetRandomEmptyCell());
+            }
+
+            ghost.Run();
+        }
+
+        private void GhostChasing(Ghost ghost)
+        {
+            if (ghost.TargetCell == ghost.CurrentCell())
+            {
+                ghost.UpdateChasePath();
+            }
+
+            ghost.ChaseTime -= _deltaTime;
+            ghost.DoChasing();
+        }
+
+        private void GhostReturning(Ghost ghost)
+        {
+            ghost.ReturnTime -= _deltaTime;
+            ghost.DoReturning();
+        }
+
+        #endregion
+    }
+}
