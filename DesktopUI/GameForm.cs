@@ -80,19 +80,25 @@ namespace Pacman.DesktopUI
             menu.Visible = _game.IsPaused;
          }
 
-        // here score increase in label
         private void UpdateGame()
         {
-            // here score increase in label
+            countLabel.Text = _game.Score.ToString();
             Refresh();
         }
 
-        // add picture instead of message box ?
         private void PlayerWin()
         {
             Restart();
             _game.PauseGame();
             MessageBox.Show("You won !");
+        }
+
+        private void PlayerDie()
+        {
+            _game.PauseGame();
+            Restart();
+            _game.PauseGame();
+            MessageBox.Show("You died !");
         }
 
         private void Draw(object sender, PaintEventArgs e)
@@ -107,6 +113,7 @@ namespace Pacman.DesktopUI
             _game.Update += UpdateGame;
             _game.Pause += Pause;
             _game.Win += PlayerWin;
+            _game.Die += PlayerDie;
         }
 
         private void GameUnsubscribe()
@@ -114,6 +121,7 @@ namespace Pacman.DesktopUI
             _game.Update -= UpdateGame;
             _game.Pause -= Pause;
             _game.Win -= PlayerWin;
+            _game.Die -= PlayerDie;
         }
     }
 }

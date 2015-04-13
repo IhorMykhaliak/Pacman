@@ -84,13 +84,7 @@ namespace Pacman.GameEngine
 
         public void PickItem(List<Ghost> ghosts)
         {
-            for (int i = 0; i < _level.Width; i++)
-            {
-                for (int j = 0; j < _level.Height; j++)
-                {
-                    TryPickItem(_level.Map[i, j], ghosts);
-                }
-            }
+            TryPickItem(_level.Map[GetX(), GetY()], ghosts);
         }
 
         private void TryPickItem(Cell cell, List<Ghost> ghosts)

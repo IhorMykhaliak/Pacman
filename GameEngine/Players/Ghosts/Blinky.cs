@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pacman.GameEngine
 {
-    class Blinky : Ghost
+    public class Blinky : Ghost
     {
         #region Initialization
 

@@ -71,7 +71,6 @@ namespace Pacman.GameEngine
             }
         }
 
-        // see if I need set here
         public Timer MainTimer
         {
             get
@@ -100,15 +99,24 @@ namespace Pacman.GameEngine
             }
         }
 
+        public GameLogic Logic
+        {
+            get
+            {
+                return _gameLogic;
+            }
+        }
+
         #endregion
 
         #region Initialization
 
         private void InitializeLevel()
         {
-            //string[] lines = GameEngine.Properties.Resources.mainLevel
-            string[] lines = File.ReadAllLines(@"mainLevel.txt");
+            string levelStruct = Pacman.GameEngine.Properties.Resources.mainLevel;
+            string[] lines = levelStruct.Replace("\r\n", " ").Split(new char[] {' '});
             _map = new char[lines.Length, lines[0].Length];
+
             for (int i = 0; i < lines.Length; i++)
             {
                 for (int j = 0; j < lines[i].Length; j++)
@@ -158,6 +166,8 @@ namespace Pacman.GameEngine
 
         private void InitializeLogic()
         {
+            _deltaTime = ((float)(_mainTimer.Interval) / 1000.0f);
+
             _gameLogic = new GameLogic(_pacman, _ghosts, _level, _deltaTime);
             _gameLogic.PacmanDied += PacmanDie;
             _gameLogic.GhostDied += GhostDie;
@@ -166,8 +176,6 @@ namespace Pacman.GameEngine
 
         private void InitializeGame()
         {
-            _deltaTime = ((float)(_mainTimer.Interval) / 1000.0f);
-
             _isPaused = true;
             _elapsedTime = 0.0f;
             _pacmanCoins = _pacman.Coins;
@@ -184,9 +192,9 @@ namespace Pacman.GameEngine
 
             InitializeTimer();
 
-            InitializeGame();
-
             InitializeLogic();
+
+            InitializeGame();
         }
 
         #endregion
@@ -198,6 +206,8 @@ namespace Pacman.GameEngine
         public event Action Pause;
 
         public event Action Win;
+
+        public event Action Die;
 
         #endregion
 
@@ -221,6 +231,7 @@ namespace Pacman.GameEngine
             }
 
             _gameLogic.PacmanWinCheck();
+
             UpdateGame();
         }
 
@@ -250,10 +261,13 @@ namespace Pacman.GameEngine
             }
         }
 
-        // add picture game over
         private void PacmanDie()
         {
             _mainTimer.Stop();
+            if (Die != null)
+            {
+                Die();
+            }
         }
 
         private void GhostDie(Ghost ghost)
@@ -270,17 +284,13 @@ namespace Pacman.GameEngine
             _isPaused = false;
             _elapsedTime = 0.0f;
             _pacmanCoins = 0;
-
-            _pacman = null;
-            _ghosts = null;
-
             _map = null;
-            _level = null;
 
             _mainTimer.Elapsed -= MainTimerTick;
             _mainTimer = null;
 
-            _gameLogic = null;
+            _ghosts = null;
+            _level = null;
         }
 
         #endregion

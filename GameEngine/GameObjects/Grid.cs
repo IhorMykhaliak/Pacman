@@ -111,7 +111,7 @@ namespace Pacman.GameEngine
 
         #endregion
 
-        public Cell GetRandomEmptyCell()
+        public Cell GetRandomFreeCell()
         {
             Cell randomCell = new Cell();
             randomCell.Content = Content.Wall;

@@ -272,7 +272,7 @@ namespace Pacman.GameEngine
             FollowPath(_returnPath);
         }
 
-        public void FollowPath(List<Cell> path)
+        private void FollowPath(List<Cell> path)
         {
             if (_pathIterator < path.Count && _pathIterator > -1)
             {
@@ -283,7 +283,7 @@ namespace Pacman.GameEngine
             }
         }
 
-        public bool MoveTo(Cell cell)
+        private bool MoveTo(Cell cell)
         {
             TrySlowerSpeed();
             UpdateDirection(cell);
@@ -313,22 +313,22 @@ namespace Pacman.GameEngine
 
         #region Movement constraints
 
-        protected bool IsUpAvailable()
+        public bool IsUpAvailable()
         {
             return _pacman.GetY() - _distance > 0;
         }
 
-        protected bool IsDownAvailable()
+        public bool IsDownAvailable()
         {
             return _pacman.GetY() + _distance < _level.Height - 1;
         }
 
-        protected bool IsLeftAvailable()
+        public bool IsLeftAvailable()
         {
             return _pacman.GetX() - _distance > 0;
         }
 
-        protected bool IsRightAvailable()
+        public bool IsRightAvailable()
         {
             return _pacman.GetX() + _distance < _level.Width - 1;
         }
@@ -425,23 +425,6 @@ namespace Pacman.GameEngine
             _targetCell = _chasePath.Last();
         }
 
-        protected virtual Cell CalculateTargetCell()
-        {
-            return _pacman.CurrentCell();
-        }
-
-        protected void SelectChasePath(List<Cell> path)
-        {
-            if (path.Count >= chasePathLength)
-            {
-                _chasePath = path.GetRange(0, chasePathLength);
-            }
-            else
-            {
-                _chasePath = path;
-            }
-        }
-
         public void DoChasing()
         {
             if (_chaseTime > 0)
@@ -472,6 +455,23 @@ namespace Pacman.GameEngine
             if (IsAtStart())
             {
                 StartPatrol();
+            }
+        }
+
+        public virtual Cell CalculateTargetCell()
+        {
+            return _pacman.CurrentCell();
+        }
+
+        protected void SelectChasePath(List<Cell> path)
+        {
+            if (path.Count >= chasePathLength)
+            {
+                _chasePath = path.GetRange(0, chasePathLength);
+            }
+            else
+            {
+                _chasePath = path;
             }
         }
 

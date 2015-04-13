@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Pacman.GameEngine
 {
-    class GameLogic
+    public class GameLogic
     {
         #region Fields
 
@@ -20,7 +20,6 @@ namespace Pacman.GameEngine
         #endregion
 
         #region Initialization
-
 
         public GameLogic(Player pacman, List<Ghost> ghosts, Grid level, float deltaTime)
         {
@@ -44,33 +43,46 @@ namespace Pacman.GameEngine
 
         #region Pacman behaviour
 
-        // refactor this
         public void PowerUpCheck()
         {
             if (_pacman.IsPoweredUp)
             {
                 _pacman.PowerUpTime -= _deltaTime;
+
                 if (_pacman.PowerUpTime > 0)
                 {
-                    foreach (Ghost ghost in _ghosts)
-                    {
-                        if (_pacman.PowerUpTime > 1)
-                        {
-                            ghost.IsChanging = false;
-                        }
-                        else
-                            if (_pacman.PowerUpTime > 0)
-                            {
-                                ghost.IsChanging = true;
-                            }
-
-                        ghost.Behaviour = Behaviour.Frightened;
-                    }
+                    WhilePoweredUp();
                 }
                 else
                 {
                     PowerDown();
                 }
+            }
+        }
+
+        public void PacmanWinCheck()
+        {
+            if (PlayerWin != null && IsPlayerWinner())
+            {
+                PlayerWin();
+            }
+        }
+
+        private void WhilePoweredUp()
+        {
+            foreach (Ghost ghost in _ghosts)
+            {
+                if (_pacman.PowerUpTime > 1)
+                {
+                    ghost.IsChanging = false;
+                }
+                else
+                    if (_pacman.PowerUpTime > 0)
+                    {
+                        ghost.IsChanging = true;
+                    }
+
+                ghost.Behaviour = Behaviour.Frightened;
             }
         }
 
@@ -89,14 +101,6 @@ namespace Pacman.GameEngine
             if (PacmanDied != null)
             {
                 PacmanDied();
-            }
-        }
-
-        public void PacmanWinCheck()
-        {
-            if (PlayerWin != null && IsPlayerWinner())
-            {
-                PlayerWin();
             }
         }
 
@@ -161,7 +165,7 @@ namespace Pacman.GameEngine
         {
             if (ghost.TargetCell == ghost.CurrentCell())
             {
-                ghost.UpdateRunPath(_level.GetRandomEmptyCell());
+                ghost.UpdateRunPath(_level.GetRandomFreeCell());
             }
 
             ghost.Run();

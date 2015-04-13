@@ -117,12 +117,12 @@ namespace Pacman.GameEngine
             return IntersectsByX(other) && IntersectsByY(other);
         }
 
-        public bool IntersectsByX(BoundingSquare other)
+        private bool IntersectsByX(BoundingSquare other)
         {
             return (other.Right >= this.Left && other.Left <= this.Right);
         }
 
-        public bool IntersectsByY(BoundingSquare other)
+        private bool IntersectsByY(BoundingSquare other)
         {
             return (other.Bottom >= this.Top && other.Top <= this.Bottom);
         }

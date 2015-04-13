@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacman.DesktopUI", "Desktop
 EndProject
 Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "Pacman.Model", "PacmanModeling\Pacman.Model.modelproj", "{41008AAD-2C13-4A4A-A80C-2335078B67C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacman.GameEngine.Test", "Pacman.GameEngine.Test\Pacman.GameEngine.Test.csproj", "{67934A39-A428-4466-BBFE-16426C564B78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{41008AAD-2C13-4A4A-A80C-2335078B67C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41008AAD-2C13-4A4A-A80C-2335078B67C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41008AAD-2C13-4A4A-A80C-2335078B67C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67934A39-A428-4466-BBFE-16426C564B78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67934A39-A428-4466-BBFE-16426C564B78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67934A39-A428-4466-BBFE-16426C564B78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67934A39-A428-4466-BBFE-16426C564B78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -61,6 +61,8 @@ namespace Pacman.ConsoleUI
             Console.WriteLine("Score: {0}", _game.Player.Coins * 10);
         }
 
+        #region Game actions
+
         private static void Restart()
         {
             if (!_game.IsPaused)
@@ -98,14 +100,26 @@ namespace Pacman.ConsoleUI
             Console.WriteLine("You won !");
         }
 
+        private static void PlayerDie()
+        {
+            _game.PauseGame();
+            Console.Clear();
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine("You died !");
+        }
+
+        #endregion
+
         private static void GameSubscribe()
         {
             _game.Win += PlayerWin;
+            _game.Die += PlayerDie;
         }
 
         private static void GameUnsubscribe()
         {
             _game.Win -= PlayerWin;
+            _game.Die -= PlayerDie;
         }
     }
 }

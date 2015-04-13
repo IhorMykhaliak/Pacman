@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pacman.GameEngine
 {
-    class Pinky : Ghost
+    public class Pinky : Ghost
     {
         #region Initialization
 
@@ -28,7 +28,7 @@ namespace Pacman.GameEngine
 
         #region Behaviour
 
-        protected override Cell CalculateTargetCell()
+        public override Cell CalculateTargetCell()
         {
             Cell cell = new Cell();
             cell.Content = Content.Wall;

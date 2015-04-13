@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pacman.GameEngine
 {
-    class Inky : Ghost
+    public class Inky : Ghost
     {
         #region Fields
 
@@ -52,6 +52,21 @@ namespace Pacman.GameEngine
 
         #region Behaviour
 
+        public override Cell CalculateTargetCell()
+        {
+            Cell offsetCell = CalculateOffsetCell();
+            Cell cell;
+
+            _xDistance = _pacman.GetX() - _blinky.GetX();
+            _yDistance = _pacman.GetY() - _blinky.GetY();
+
+            TargetInBounds();
+
+            cell = _level.Map[_pacman.GetX() + _xDistance, _pacman.GetY() + _yDistance];
+
+            return TargetEmpty(cell);
+        }
+
         private Cell CalculateOffsetCell()
         {
             Cell offsetCell = new Cell();
@@ -95,21 +110,6 @@ namespace Pacman.GameEngine
             }
 
             return offsetCell;
-        }
-
-        protected override Cell CalculateTargetCell()
-        {
-            Cell offsetCell = CalculateOffsetCell();
-            Cell cell;
-
-            _xDistance = _pacman.GetX() - _blinky.GetX();
-            _yDistance = _pacman.GetY() - _blinky.GetY();
-
-            TargetInBounds();
-
-            cell = _level.Map[_pacman.GetX() + _xDistance, _pacman.GetY() + _yDistance];
-
-            return TargetEmpty(cell);
         }
 
         private void TargetInBounds()

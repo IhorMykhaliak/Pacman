@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pacman.GameEngine
 {
-    class Clyde : Ghost
+    public class Clyde : Ghost
     {
         #region Initialization
 
@@ -47,7 +47,7 @@ namespace Pacman.GameEngine
 
         private void UseStupidPath()
         {
-            List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), _level.GetRandomEmptyCell(), _level.Map);
+            List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), _level.GetRandomFreeCell(), _level.Map);
             _pathIterator = 0;
 
             SelectChasePath(bestPath);
