@@ -17,6 +17,8 @@ Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "Pacman.Model", "PacmanModel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacman.GameEngine.Test", "Pacman.GameEngine.Test\Pacman.GameEngine.Test.csproj", "{67934A39-A428-4466-BBFE-16426C564B78}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacman.SoundHandler", "Pacman.SoundHandler\Pacman.SoundHandler.csproj", "{639AD628-8224-4023-8199-F45DDAC529B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{67934A39-A428-4466-BBFE-16426C564B78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67934A39-A428-4466-BBFE-16426C564B78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67934A39-A428-4466-BBFE-16426C564B78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{639AD628-8224-4023-8199-F45DDAC529B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{639AD628-8224-4023-8199-F45DDAC529B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{639AD628-8224-4023-8199-F45DDAC529B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{639AD628-8224-4023-8199-F45DDAC529B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

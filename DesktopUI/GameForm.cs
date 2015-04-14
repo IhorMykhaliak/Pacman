@@ -14,9 +14,10 @@ namespace Pacman.DesktopUI
     public partial class GameForm : Form
     {
         private Game _game;
+        private SoundHandler.SoundHandler _soundHandler;
 
         // 1 problem with threads
-        // 2 sounds in tests 
+        // 2 sound in tests
         public GameForm()
         {
             InitializeComponent();
@@ -32,6 +33,7 @@ namespace Pacman.DesktopUI
             MaximizeBox = false;
 
             _game = new Game();
+            _soundHandler = new SoundHandler.SoundHandler();
             GameSubscribe();
 
             Paint += Draw;
@@ -55,12 +57,12 @@ namespace Pacman.DesktopUI
                     break;
                 case Keys.Space: _game.PauseGame();
                     break;
-                case Keys.R: Restart();
+                case Keys.R: OnRestart();
                     break;
             }
         }
 
-        private void Restart()
+        private void OnRestart()
         {
             Paint -= Draw;
             GameUnsubscribe();
@@ -74,30 +76,32 @@ namespace Pacman.DesktopUI
             
             Paint += Draw;
             GameSubscribe();
+
+
         }
 
-        private void Pause()
+        private void OnPause()
          {
             menu.Visible = _game.IsPaused;
          }
 
-        private void UpdateGame()
+        private void OnUpdate()
         {
             countLabel.Text = _game.Score.ToString();
             Refresh();
         }
 
-        private void PlayerWin()
+        private void OnWin()
         {
-            Restart();
+            OnRestart();
             _game.PauseGame();
             MessageBox.Show("You won !");
         }
 
-        private void PlayerDie()
+        private void OnDie()
         {
             _game.PauseGame();
-            Restart();
+            OnRestart();
             _game.PauseGame();
             MessageBox.Show("You died !");
         }
@@ -111,18 +115,24 @@ namespace Pacman.DesktopUI
 
         private void GameSubscribe()
         {
-            _game.Update += UpdateGame;
-            _game.Pause += Pause;
-            _game.Win += PlayerWin;
-            _game.Die += PlayerDie;
+            _game.Update += OnUpdate;
+            _game.Pause += OnPause;
+            _game.Win += OnWin;
+            _game.Die += OnDie;
+            _game.NewGame += _soundHandler.OnNewGame;
+            _game.GhostDie += _soundHandler.OnGhostDie;
+            _game.Player.EatItem += _soundHandler.OnEatItem;
         }
 
         private void GameUnsubscribe()
         {
-            _game.Update -= UpdateGame;
-            _game.Pause -= Pause;
-            _game.Win -= PlayerWin;
-            _game.Die -= PlayerDie;
+            _game.Update -= OnUpdate;
+            _game.Pause -= OnPause;
+            _game.Win -= OnWin;
+            _game.Die -= OnDie;
+            _game.NewGame -= _soundHandler.OnNewGame;
+            _game.GhostDie -= _soundHandler.OnGhostDie;
+            _game.Player.EatItem -= _soundHandler.OnEatItem;
         }
     }
 }

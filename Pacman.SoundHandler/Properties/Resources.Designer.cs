@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pacman.GameEngine.Properties {
+namespace Pacman.SoundHandler.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Pacman.GameEngine.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Pacman.GameEngine.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Pacman.SoundHandler.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,25 +61,29 @@ namespace Pacman.GameEngine.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-        ///wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-        ///wwwwccccccccccccwwccccccccccccwwww
-        ///wwwwcwwwwcwwwwwcwwcwwwwwcwwwwcwwww
-        ///wwwwpwwwwcwwwwwcwwcwwwwwcwwwwpwwww
-        ///wwwwcwwwwcwwwwwcwwcwwwwwcwwwwcwwww
-        ///wwwwccccccccccccccccccccccccccwwww
-        ///wwwwcwwwwcwwcwwwwwwwwcwwcwwwwcwwww
-        ///wwwwcwwwwcwwcwwwwwwwwcwwcwwwwcwwww
-        ///wwwwccccccwwccccwwccccwwccccccwwww
-        ///wwwwwwwwwcwwwwwewwewwwwwcwwwwwwwww
-        ///wwwwwwwwwcwwwwwewwewwwwwcwwwwwwwww
-        ///wwwwwwwwwcwweeeeeeeeeewwcwwwwwwwww
-        ///wwwwwwwwwcwwewwweewwwewwcwwwwwwwww
-        ///wwwwwwww [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static string mainLevel {
+        internal static System.IO.UnmanagedMemoryStream pacman_beginning {
             get {
-                return ResourceManager.GetString("mainLevel", resourceCulture);
+                return ResourceManager.GetStream("pacman_beginning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream pacman_chomp {
+            get {
+                return ResourceManager.GetStream("pacman_chomp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream pacman_eat_ghost {
+            get {
+                return ResourceManager.GetStream("pacman_eat_ghost", resourceCulture);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Pacman.GameEngine
 {
     public class Player : GameCharacter
     {
-        #region Private fields
+        #region Fields
 
         private const float powerUpTime = 5.0f;
 
@@ -82,6 +82,24 @@ namespace Pacman.GameEngine
 
         #endregion
 
+        #region Events
+
+        public event Action EatItem;
+
+        #endregion
+
+        #region Event handlers
+
+        private void OnEatItem()
+        {
+            if (EatItem != null)
+            {
+                EatItem();
+            }
+        }
+
+        #endregion
+
         #region Pick item
 
         public void PickItem(List<Ghost> ghosts)
@@ -107,7 +125,7 @@ namespace Pacman.GameEngine
         {
             if (cell.IsCoin())
             {
-                PlaySoundEatItem();
+                OnEatItem();
                 UpdateAfterPickUp(cell);
             }
         }
@@ -116,7 +134,7 @@ namespace Pacman.GameEngine
         {
             if (cell.IsPowerUp())
             {
-                PlaySoundEatItem();
+                OnEatItem();
 
                 UpdateAfterPickUp(cell);
 
@@ -137,11 +155,5 @@ namespace Pacman.GameEngine
         }
 
         #endregion
-
-        private void PlaySoundEatItem()
-        {
-            SoundPlayer player = new SoundPlayer(Pacman.GameEngine.Properties.Resources.pacman_chomp);
-            player.Play();
-        }
     }
 }

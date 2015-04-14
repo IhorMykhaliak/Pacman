@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using System.IO;
-using System.Media;
 
 namespace Pacman.GameEngine
 {
@@ -171,7 +169,7 @@ namespace Pacman.GameEngine
 
             _gameLogic = new GameLogic(_pacman, _ghosts, _level, _deltaTime);
             _gameLogic.PacmanDied += PacmanDie;
-            _gameLogic.GhostDied += GhostDie;
+            _gameLogic.GhostDied += OnGhostDie;
             _gameLogic.PlayerWin += PlayerWin;
         }
 
@@ -181,7 +179,6 @@ namespace Pacman.GameEngine
             _elapsedTime = 0.0f;
             _pacmanCoins = _pacman.Coins;
             _score = 0;
-            PlaySound(Pacman.GameEngine.Properties.Resources.pacman_beginning);
         }
 
         public Game()
@@ -210,6 +207,10 @@ namespace Pacman.GameEngine
         public event Action Win;
 
         public event Action Die;
+
+        public event Action NewGame;
+
+        public event Action GhostDie;
 
         #endregion
 
@@ -247,6 +248,8 @@ namespace Pacman.GameEngine
 
         public void PauseGame()
         {
+            OnNewGame(); 
+
             _mainTimer.Enabled = _isPaused;
             _isPaused = !_isPaused;
 
@@ -264,6 +267,14 @@ namespace Pacman.GameEngine
             }
         }
 
+        public void OnNewGame()
+        {
+            if (NewGame != null)
+            {
+                NewGame();
+            }
+        }
+
         private void PacmanDie()
         {
             _mainTimer.Stop();
@@ -273,9 +284,12 @@ namespace Pacman.GameEngine
             }
         }
 
-        private void GhostDie(Ghost ghost)
+        private void OnGhostDie(Ghost ghost)
         {
-            PlaySound(Pacman.GameEngine.Properties.Resources.pacman_eat_ghost);
+            if (GhostDie != null)
+            {
+                GhostDie();
+            }
             _score += 200;
         }
 
@@ -298,11 +312,5 @@ namespace Pacman.GameEngine
         }
 
         #endregion
-
-        private void PlaySound(Stream sound)
-        {
-            SoundPlayer player = new SoundPlayer(sound);
-            player.Play();
-        }
     }
 }
