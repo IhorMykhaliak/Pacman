@@ -15,7 +15,8 @@ namespace Pacman.DesktopUI
     {
         private Game _game;
 
-        // problem with threads
+        // 1 problem with threads
+        // 2 sounds in tests 
         public GameForm()
         {
             InitializeComponent();

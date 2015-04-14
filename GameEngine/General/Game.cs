@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.IO;
+using System.Media;
 
 namespace Pacman.GameEngine
 {
@@ -180,6 +181,7 @@ namespace Pacman.GameEngine
             _elapsedTime = 0.0f;
             _pacmanCoins = _pacman.Coins;
             _score = 0;
+            PlaySound(Pacman.GameEngine.Properties.Resources.pacman_beginning);
         }
 
         public Game()
@@ -247,6 +249,7 @@ namespace Pacman.GameEngine
         {
             _mainTimer.Enabled = _isPaused;
             _isPaused = !_isPaused;
+
             if (Pause != null)
             {
                 Pause();
@@ -272,6 +275,7 @@ namespace Pacman.GameEngine
 
         private void GhostDie(Ghost ghost)
         {
+            PlaySound(Pacman.GameEngine.Properties.Resources.pacman_eat_ghost);
             _score += 200;
         }
 
@@ -294,5 +298,11 @@ namespace Pacman.GameEngine
         }
 
         #endregion
+
+        private void PlaySound(Stream sound)
+        {
+            SoundPlayer player = new SoundPlayer(sound);
+            player.Play();
+        }
     }
 }

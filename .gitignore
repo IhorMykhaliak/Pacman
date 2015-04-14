@@ -38,6 +38,10 @@ $RECYCLE.BIN/
 *.resources
 *.modelproj
 *.classdiagram
+*.coverage
+*.mdf
+*.ldf
+*.wav
 
 # =========================
 # Operating System Files

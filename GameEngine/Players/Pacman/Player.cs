@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Media;
+using System.IO;
 
 namespace Pacman.GameEngine
 {
@@ -105,6 +107,7 @@ namespace Pacman.GameEngine
         {
             if (cell.IsCoin())
             {
+                PlaySoundEatItem();
                 UpdateAfterPickUp(cell);
             }
         }
@@ -113,6 +116,8 @@ namespace Pacman.GameEngine
         {
             if (cell.IsPowerUp())
             {
+                PlaySoundEatItem();
+
                 UpdateAfterPickUp(cell);
 
                 foreach (var ghost in ghosts)
@@ -132,5 +137,11 @@ namespace Pacman.GameEngine
         }
 
         #endregion
+
+        private void PlaySoundEatItem()
+        {
+            SoundPlayer player = new SoundPlayer(Pacman.GameEngine.Properties.Resources.pacman_chomp);
+            player.Play();
+        }
     }
 }
