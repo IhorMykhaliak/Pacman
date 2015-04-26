@@ -14,47 +14,55 @@ namespace Pacman.ConsoleUI
 
         static void Main(string[] args)
         {
-            Console.CursorVisible = false;
-            _game = new Game();
-            GameSubscribe();
-
-            ConsoleKeyInfo pressedKey = new ConsoleKeyInfo();
-
-            while (pressedKey.Key != ConsoleKey.Escape)
+            try
             {
-                if (Console.KeyAvailable)
+                Console.CursorVisible = false;
+                _game = new Game();
+                GameSubscribe();
+
+                ConsoleKeyInfo pressedKey = new ConsoleKeyInfo();
+
+                while (pressedKey.Key != ConsoleKey.Escape)
                 {
-                    pressedKey = Console.ReadKey(true);
+                    if (Console.KeyAvailable)
+                    {
+                        pressedKey = Console.ReadKey(true);
+                    }
+
+                    _game.Player.PreviousDirection = _game.Player.Direction;
+                    _game.Player.PendingDirection = Direction.None;
+
+                    switch (pressedKey.Key)
+                    {
+                        case ConsoleKey.UpArrow: _game.Player.Direction = Direction.Up;
+                            break;
+                        case ConsoleKey.DownArrow: _game.Player.Direction = Direction.Down;
+                            break;
+                        case ConsoleKey.LeftArrow: _game.Player.Direction = Direction.Left;
+                            break;
+                        case ConsoleKey.RightArrow: _game.Player.Direction = Direction.Right;
+                            break;
+                        case ConsoleKey.Spacebar: _game.PauseGame();
+                            break;
+                        case ConsoleKey.R: Restart(null, EventArgs.Empty);
+                            break;
+                        case ConsoleKey.Escape:
+                            break;
+                        default: _game.Player.Direction = _game.Player.PreviousDirection;
+                            break;
+                    }
+
+                    pressedKey = new ConsoleKeyInfo();
+
+                    Thread.Sleep(100);
+
+                    Refresh(null, EventArgs.Empty);
                 }
-
-                _game.Player.PreviousDirection = _game.Player.Direction;
-                _game.Player.PendingDirection = Direction.None;
-
-                switch (pressedKey.Key)
-                {
-                    case ConsoleKey.UpArrow: _game.Player.Direction = Direction.Up;
-                        break;
-                    case ConsoleKey.DownArrow: _game.Player.Direction = Direction.Down;
-                        break;
-                    case ConsoleKey.LeftArrow: _game.Player.Direction = Direction.Left;
-                        break;
-                    case ConsoleKey.RightArrow: _game.Player.Direction = Direction.Right;
-                        break;
-                    case ConsoleKey.Spacebar: _game.PauseGame();
-                        break;
-                    case ConsoleKey.R: Restart(null, EventArgs.Empty);
-                        break;
-                    case ConsoleKey.Escape:
-                        break;
-                    default: _game.Player.Direction = _game.Player.PreviousDirection;
-                        break;
-                }
-
-                pressedKey = new ConsoleKeyInfo();
-
-                Thread.Sleep(100);
-
-                Refresh(null, EventArgs.Empty);
+            }
+            catch (Exception exc)
+            {
+                Console.Clear();
+                Console.WriteLine(exc.Message);
             }
         }
 

@@ -158,6 +158,18 @@ namespace Pacman.GameEngine.Test.Players.Base
             Assert.AreEqual(pacman.GetY() + 1, 15);
         }
 
+        [TestMethod]
+        public void TestCanMoveFailed()
+        {
+            Game game = new Game();
+            Player pacman = game.Player;
+            Cell origin = pacman.CurrentCell();
+
+            pacman.Move();
+
+            Assert.AreEqual(origin, pacman.CurrentCell());
+        }
+
         #endregion
     }
 }
