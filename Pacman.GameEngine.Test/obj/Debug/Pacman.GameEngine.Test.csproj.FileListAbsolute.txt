@@ -1,0 +1,7 @@
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.GameEngine.Test\bin\Debug\Pacman.GameEngine.Test.dll
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.GameEngine.Test\bin\Debug\Pacman.GameEngine.Test.pdb
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.GameEngine.Test\obj\Debug\Pacman.GameEngine.Test.csprojResolveAssemblyReference.cache
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.GameEngine.Test\obj\Debug\Pacman.GameEngine.Test.dll
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.GameEngine.Test\obj\Debug\Pacman.GameEngine.Test.pdb
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.GameEngine.Test\bin\Debug\Pacman.GameEngine.dll
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.GameEngine.Test\bin\Debug\Pacman.GameEngine.pdb

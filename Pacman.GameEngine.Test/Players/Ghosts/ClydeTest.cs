@@ -23,5 +23,22 @@ namespace Pacman.GameEngine.Test.Players.Ghosts
 
             CollectionAssert.AreEqual(clyde.ChasePath, path);
         }
+
+        [TestMethod]
+        public void TestUseStupidPath()
+        {
+            Game game = new Game();
+            Player pacman = game.Player;
+            Clyde clyde = (Clyde)game.Ghosts[3];
+            clyde.SetX(4);
+            clyde.SetY(4);
+            pacman.SetX(28);
+            pacman.SetY(3);
+            List<Cell> path = AStarAlgorithm.CalculatePath(clyde.CurrentCell(), pacman.CurrentCell(), game.Level.Map).GetRange(0, 3);
+
+            clyde.UseStupidPath();
+
+            Assert.AreEqual(clyde.ChasePath.Count, 3);
+        }
     }
 }

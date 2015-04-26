@@ -1,0 +1,8 @@
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\ConsoleUI\obj\Debug\ConsoleUI.csprojResolveAssemblyReference.cache
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\ConsoleUI\bin\Debug\GameEngine.dll
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\ConsoleUI\bin\Debug\GameEngine.pdb
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\ConsoleUI\bin\Debug\Pacman.ConsoleUI.exe.config
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\ConsoleUI\bin\Debug\Pacman.ConsoleUI.exe
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\ConsoleUI\bin\Debug\Pacman.ConsoleUI.pdb
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\ConsoleUI\obj\Debug\Pacman.ConsoleUI.exe
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\ConsoleUI\obj\Debug\Pacman.ConsoleUI.pdb

@@ -1,0 +1,7 @@
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\GameEngine\bin\Debug\GameEngine.dll
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\GameEngine\bin\Debug\GameEngine.pdb
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\GameEngine\obj\Debug\GameEngine.Properties.Resources.resources
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\GameEngine\obj\Debug\GameEngine.csproj.GenerateResource.Cache
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\GameEngine\obj\Debug\GameEngine.dll
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\GameEngine\obj\Debug\GameEngine.pdb
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\GameEngine\obj\Debug\GameEngine.csprojResolveAssemblyReference.cache

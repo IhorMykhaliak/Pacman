@@ -18,30 +18,8 @@ $RECYCLE.BIN/
 *.lnk
 
 #Other
-*.csproj
-*.config
-*.suo
-*.xml
 *.exe
-*.dll
-*.pdb
-*.manifest
-*.cache
-*.Cache
-*.jpg
-*TemporaryGeneratedFile*.cs
-*FileListAbsolute.txt
-*.uml
-*.resx
-*.layout
-*.png
-*.resources
-*.modelproj
-*.classdiagram
-*.coverage
-*.mdf
-*.ldf
-*.wav
+
 
 # =========================
 # Operating System Files

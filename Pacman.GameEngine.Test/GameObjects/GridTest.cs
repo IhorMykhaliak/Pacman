@@ -15,8 +15,6 @@ namespace Pacman.GameEngine.Test.GameObjects
             Cell cell = level.GetRandomFreeCell();
 
             Assert.IsFalse(cell.IsWall());
-            Assert.IsTrue(cell.GetX() + 1 <= level.Width - 1);
-            Assert.IsTrue(cell.GetY() + 1 <= level.Height - 1);
         }
 
         [TestMethod]
@@ -31,8 +29,6 @@ namespace Pacman.GameEngine.Test.GameObjects
                 cell = level.GetRandomFreeCell();
 
                 Assert.IsFalse(cell.IsWall());
-                Assert.IsTrue(cell.GetX() + 1 <= level.Width - 1);
-                Assert.IsTrue(cell.GetY() + 1 <= level.Height - 1);
             }
         }
 

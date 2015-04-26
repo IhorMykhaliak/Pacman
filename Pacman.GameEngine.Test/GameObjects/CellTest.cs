@@ -109,5 +109,33 @@ namespace Pacman.GameEngine.Test.GameObjects
         }
 
         #endregion
+
+        [TestMethod]
+        public void TestContent()
+        {
+            Cell cell1 = new Cell(15.0f, 15.0f, Content.Empty, 20.0f);
+            Cell cell2 = new Cell(15.0f, 25.0f, Content.Wall, 10.0f);
+
+            Assert.AreEqual(cell1.Content, Content.Empty);
+            Assert.AreEqual(cell2.Content, Content.Wall);
+        }
+
+        [TestMethod]
+        public void TestSize()
+        {
+            Cell cell1 = new Cell(15.0f, 15.0f, Content.Empty, 20.0f);
+            Cell cell2 = new Cell(15.0f, 25.0f, Content.Wall, 10.0f);
+
+            Assert.AreEqual(cell1.Size, 20.0f);
+            Assert.AreEqual(cell2.Size, 10.0f);
+        }
+
+        [TestMethod]
+        public void TestToString()
+        {
+            Cell cell1 = new Cell(15.0f, 15.0f, Content.Empty, 20.0f);
+
+            Assert.AreEqual(cell1.ToString(), "[-1, -1]");
+        }
     }
 }

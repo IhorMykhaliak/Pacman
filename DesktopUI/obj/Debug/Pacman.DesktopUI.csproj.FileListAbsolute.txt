@@ -1,0 +1,13 @@
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\bin\Debug\Pacman.DesktopUI.exe.config
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\obj\Debug\Pacman.DesktopUI.exe
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\obj\Debug\Pacman.DesktopUI.pdb
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\bin\Debug\Pacman.DesktopUI.exe
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\bin\Debug\Pacman.DesktopUI.pdb
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\bin\Debug\Pacman.GameEngine.dll
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\bin\Debug\Pacman.GameEngine.pdb
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\obj\Debug\Pacman.DesktopUI.csprojResolveAssemblyReference.cache
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\obj\Debug\Pacman.DesktopUI.GameForm.resources
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\obj\Debug\Pacman.DesktopUI.Properties.Resources.resources
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\obj\Debug\Pacman.DesktopUI.csproj.GenerateResource.Cache
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\bin\Debug\Pacman.SoundHandler.dll
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\DesktopUI\bin\Debug\Pacman.SoundHandler.pdb

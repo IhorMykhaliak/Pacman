@@ -78,13 +78,6 @@ namespace Pacman.GameEngine
 
         #region Initialization
 
-        public BoundingSquare()
-        {
-            this._x = 0.0f;
-            this._y = 0.0f;
-            this._size = 0.0f;
-        }
-
         public BoundingSquare(float x, float y, float size)
         {
             #region Validation
@@ -142,15 +135,13 @@ namespace Pacman.GameEngine
 
         public override bool Equals(object obj)
         {
-            BoundingSquare other = obj as BoundingSquare;
-
-            if (other == null)
+            if (obj is BoundingSquare)
             {
-                return false;
+                return this == (BoundingSquare)obj;
             }
             else
             {
-                return this == other;
+                return false;
             }
         }
 

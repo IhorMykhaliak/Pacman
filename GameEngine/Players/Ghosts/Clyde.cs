@@ -45,7 +45,7 @@ namespace Pacman.GameEngine
             }
         }
 
-        private void UseStupidPath()
+        public void UseStupidPath()
         {
             List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), _level.GetRandomFreeCell(), _level.Map);
             _pathIterator = 0;
