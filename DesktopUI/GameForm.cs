@@ -13,16 +13,22 @@ namespace Pacman.DesktopUI
 {
     public partial class GameForm : Form
     {
+        #region Fields
+
         private Game _game;
         private SoundHandler.SoundHandler _soundHandler;
 
-        // 1 problem with threads
-        // 2 sound in tests
+        #endregion
+
+        #region Initialization
+
         public GameForm()
         {
             InitializeComponent();
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
         }
+
+        #endregion
 
         #region Event handlers
 
@@ -57,12 +63,12 @@ namespace Pacman.DesktopUI
                     break;
                 case Keys.Space: _game.PauseGame();
                     break;
-                case Keys.R: OnRestart();
+                case Keys.R: OnRestart(this, EventArgs.Empty);
                     break;
             }
         }
 
-        private void OnRestart()
+        private void OnRestart(object sender, EventArgs e)
         {
             Paint -= Draw;
             GameUnsubscribe();
@@ -80,28 +86,28 @@ namespace Pacman.DesktopUI
 
         }
 
-        private void OnPause()
+        private void OnPause(object sender, EventArgs e)
          {
             menu.Visible = _game.IsPaused;
          }
 
-        private void OnUpdate()
+        private void OnUpdate(object sender, EventArgs e)
         {
             countLabel.Text = _game.Score.ToString();
             Refresh();
         }
 
-        private void OnWin()
+        private void OnWin(object sender, EventArgs e)
         {
-            OnRestart();
+            OnRestart(this, EventArgs.Empty);
             _game.PauseGame();
             MessageBox.Show("You won !");
         }
 
-        private void OnDie()
+        private void OnDie(object sender, EventArgs e)
         {
             _game.PauseGame();
-            OnRestart();
+            OnRestart(this, EventArgs.Empty);
             _game.PauseGame();
             MessageBox.Show("You died !");
         }

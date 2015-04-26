@@ -69,12 +69,30 @@ namespace Pacman.GameEngine
         public Player(Grid grid)
             : this()
         {
+            #region Validation
+
+            if (grid == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             _level = grid;
         }
 
         public Player(Grid grid, int x, int y, float size)
             : this(grid)
         {
+            #region Validation
+
+            if (size <= 0)
+            {
+                throw new ArgumentException();
+            }
+
+            #endregion
+
             _size = size;
             SetX(x);
             SetY(y);
@@ -84,7 +102,7 @@ namespace Pacman.GameEngine
 
         #region Events
 
-        public event Action EatItem;
+        public event EventHandler<EventArgs> EatItem;
 
         #endregion
 
@@ -94,7 +112,7 @@ namespace Pacman.GameEngine
         {
             if (EatItem != null)
             {
-                EatItem();
+                EatItem(this, EventArgs.Empty);
             }
         }
 
@@ -104,6 +122,15 @@ namespace Pacman.GameEngine
 
         public void PickItem(List<Ghost> ghosts)
         {
+            #region Validation
+
+            if (ghosts == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             TryPickItem(_level.Map[GetX(), GetY()], ghosts);
         }
 

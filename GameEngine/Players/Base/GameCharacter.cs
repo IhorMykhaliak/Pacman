@@ -164,11 +164,29 @@ namespace Pacman.GameEngine
 
         public void SetX(int x)
         {
+            #region Validation
+
+            if (x < 0)
+            {
+                throw new ArgumentException();
+            }
+
+            #endregion
+
             _xPos = x * _size;
         }
 
         public void SetY(int y)
         {
+            #region Validation
+
+            if (y < 0)
+            {
+                throw new ArgumentException();
+            }
+
+            #endregion
+
             _yPos = y * _size;
         }
 
@@ -188,6 +206,15 @@ namespace Pacman.GameEngine
         public GameCharacter(Grid grid, float size)
             : this()
         {
+            #region Validation
+
+            if (grid == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             _level = grid;
             _size = size;
         }

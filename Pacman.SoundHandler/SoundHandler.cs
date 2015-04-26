@@ -10,17 +10,17 @@ namespace Pacman.SoundHandler
 {
     public class SoundHandler
     {
-        public void OnNewGame()
+        public void OnNewGame(object sender, EventArgs e)
         {
             PlaySound(Pacman.SoundHandler.Properties.Resources.pacman_beginning);
         }
 
-        public void OnGhostDie()
+        public void OnGhostDie(object sender, EventArgs e)
         {
             PlaySound(Pacman.SoundHandler.Properties.Resources.pacman_eat_ghost);
         }
 
-        public void OnEatItem()
+        public void OnEatItem(object sender, EventArgs e)
         {
             PlaySound(Pacman.SoundHandler.Properties.Resources.pacman_chomp);
         }

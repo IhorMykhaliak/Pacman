@@ -109,6 +109,15 @@ namespace Pacman.GameEngine
         public Cell(float x, float y, Content c, float size)
             : this(x, y)
         {
+            #region Validation
+
+            if (size <= 0)
+            {
+                throw new ArgumentException("Cell size has to be greater than 0");
+            }
+
+            #endregion
+
             _content = c;
             _size = size;
         }
@@ -139,6 +148,15 @@ namespace Pacman.GameEngine
 
         public bool IsNextTo(Cell other)
         {
+            #region Validation
+
+            if (other == null)
+            {
+                throw new ArgumentNullException("Cell invalid");
+            }
+
+            #endregion
+
             int xDiff = Math.Abs(this.GetX() - other.GetX());
             int yDiff = Math.Abs(this.GetY() - other.GetY());
 

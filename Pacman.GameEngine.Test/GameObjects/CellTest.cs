@@ -99,6 +99,15 @@ namespace Pacman.GameEngine.Test.GameObjects
             Assert.IsFalse(cell1.IsNextTo(cell2));
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestIsNextToNullCell()
+        {
+            Cell cell1 = new Cell(0.0f, 0.0f, Content.Empty, 20.0f);
+
+            cell1.IsNextTo(null);
+        }
+
         #endregion
     }
 }

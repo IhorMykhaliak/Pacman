@@ -87,6 +87,15 @@ namespace Pacman.GameEngine
 
         public BoundingSquare(float x, float y, float size)
         {
+            #region Validation
+
+            if (size <= 0)
+            {
+                throw new ArgumentException("Size has to be greater than 0");
+            }
+
+            #endregion
+
             this._x = x;
             this._y = y;
             this._size = size;
@@ -134,6 +143,7 @@ namespace Pacman.GameEngine
         public override bool Equals(object obj)
         {
             BoundingSquare other = obj as BoundingSquare;
+
             if (other == null)
             {
                 return false;

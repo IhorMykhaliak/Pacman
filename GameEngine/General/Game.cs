@@ -200,17 +200,17 @@ namespace Pacman.GameEngine
 
         #region Events
 
-        public event Action Update;
+        public event EventHandler<EventArgs> Update;
 
-        public event Action Pause;
+        public event EventHandler<EventArgs> Pause;
 
-        public event Action Win;
+        public event EventHandler<EventArgs> Win;
 
-        public event Action Die;
+        public event EventHandler<EventArgs> Die;
 
-        public event Action NewGame;
+        public event EventHandler<EventArgs> NewGame;
 
-        public event Action GhostDie;
+        public event EventHandler<EventArgs> GhostDie;
 
         #endregion
 
@@ -242,7 +242,7 @@ namespace Pacman.GameEngine
         {
             if (Update != null)
             {
-                Update();
+                Update(this, EventArgs.Empty);
             }
         }
 
@@ -255,15 +255,15 @@ namespace Pacman.GameEngine
 
             if (Pause != null)
             {
-                Pause();
+                Pause(this, EventArgs.Empty);
             }
         }
 
-        public void PlayerWin()
+        public void PlayerWin(object sender, EventArgs e)
         {
             if (Win != null)
             {
-                Win();
+                Win(this, EventArgs.Empty);
             }
         }
 
@@ -271,24 +271,33 @@ namespace Pacman.GameEngine
         {
             if (NewGame != null)
             {
-                NewGame();
+                NewGame(this, EventArgs.Empty);
             }
         }
 
-        private void PacmanDie()
+        private void PacmanDie(object sender, EventArgs e)
         {
             _mainTimer.Stop();
             if (Die != null)
             {
-                Die();
+                Die(this, EventArgs.Empty);
             }
         }
 
-        private void OnGhostDie(Ghost ghost)
+        private void OnGhostDie(object sender, Pacman.GameEngine.GameLogic.GhostEventArgs e)
         {
+            #region Validation
+
+            if (e.Ghost == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             if (GhostDie != null)
             {
-                GhostDie();
+                GhostDie(this, EventArgs.Empty);
             }
             _score += 200;
         }

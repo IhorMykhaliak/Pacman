@@ -7,6 +7,38 @@ namespace Pacman.GameEngine.Test
     [TestClass]
     public class GameLogicTest
     {
+        #region Initialization
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestInitializeWithInvalidPacman()
+        {
+            GameLogic logic = new GameLogic(null, new List<Ghost>(), new Grid(), 1.0f);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestInitializeWithInvalidGhosts()
+        {
+            GameLogic logic = new GameLogic(new Player(), null, new Grid(), 1.0f);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestInitializeWithInvalidGrid()
+        {
+            GameLogic logic = new GameLogic(new Player(), new List<Ghost>(), null, 1.0f);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestInitializeWithInvalidDeltaTime()
+        {
+            GameLogic logic = new GameLogic(new Player(), new List<Ghost>(), new Grid(), -1.0f);
+        }
+
+        #endregion
+
         #region Pacman behaviour
 
         [TestMethod]

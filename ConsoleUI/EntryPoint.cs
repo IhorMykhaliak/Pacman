@@ -42,7 +42,7 @@ namespace Pacman.ConsoleUI
                         break;
                     case ConsoleKey.Spacebar: _game.PauseGame();
                         break;
-                    case ConsoleKey.R: Restart();
+                    case ConsoleKey.R: Restart(null, EventArgs.Empty);
                         break;
                     case ConsoleKey.Escape:
                         break;
@@ -54,45 +54,43 @@ namespace Pacman.ConsoleUI
 
                 Thread.Sleep(100);
 
-                Refresh();
+                Refresh(null, EventArgs.Empty);
             }
-
-            Console.Clear();
-            Console.WriteLine("Score: {0}", _game.Player.Coins * 10);
         }
 
         #region Game actions
 
-        private static void Restart()
+        private static void Restart(object sender, EventArgs e)
         {
-            if (!_game.IsPaused)
-            {
-                GameUnsubscribe();
-                _game.Dispose();
-                _game = new Game();
-                GameSubscribe();
-                
-                _game.IsPaused = false;
-                _game.MainTimer.Enabled = true;
-                Refresh();
-            }
+            GameUnsubscribe();
+            _game.Dispose();
+            _game = new Game();
+            GameSubscribe();
+            
+            _game.IsPaused = false;
+            _game.MainTimer.Enabled = true;
+            Refresh(null, EventArgs.Empty);
         }
 
-        private static void Refresh()
+        private static void Refresh(object sender, EventArgs e)
         {
             if (!_game.IsPaused)
             {
                 Console.Clear();
-                Draw();
+                Draw(null, EventArgs.Empty);
+            }
+            else
+            {
+                DisplayMenu();
             }
         }
 
-        private static void Draw()
+        private static void Draw(object sender, EventArgs e)
         {
             Drawing.DrawGame(_game);
         }
 
-        private static void PlayerWin()
+        private static void PlayerWin(object sender, EventArgs e)
         {
             _game.PauseGame();
             Console.Clear();
@@ -100,12 +98,11 @@ namespace Pacman.ConsoleUI
             Console.WriteLine("You won !");
         }
 
-        private static void PlayerDie()
+        private static void PlayerDie(object sender, EventArgs e)
         {
             _game.PauseGame();
             Console.Clear();
             Console.SetCursorPosition(0, 0);
-            Console.WriteLine("You died !");
         }
 
         #endregion
@@ -120,6 +117,28 @@ namespace Pacman.ConsoleUI
         {
             _game.Win -= PlayerWin;
             _game.Die -= PlayerDie;
+        }
+
+        private static void DisplayMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("PLEASE OPEN IN BIG CONSOLE WINDOW !!!");
+            Console.WriteLine();
+            Console.WriteLine("----------------------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("Press -Space- to play/pause.");
+            Console.WriteLine("Use -arrow keys- to move pacman.");
+            Console.WriteLine("If you die or just want to try it out press -R- to restart.");
+            Console.WriteLine();
+            Console.WriteLine("----------------------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("Eat all green -o-'s to win.");
+            Console.WriteLine("Eat purple -p-'s to power up for limited time, so you can eat enemies.");
+            Console.WriteLine("If you are not powered up enemis kill you in one touch.");
+            Console.WriteLine();
+            Console.WriteLine("----------------------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("Score: {0}", _game.Score);
         }
     }
 }

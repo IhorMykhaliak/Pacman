@@ -83,6 +83,20 @@ namespace Pacman.GameEngine
 
         public Grid(char[,] mapStructure, float size)
         {
+            #region Validation
+
+            if (size <= 0)
+            {
+                throw new ArgumentException("Size of cell should be bigger than 0");
+            }
+
+            if (mapStructure.GetLength(0) != mapStructure.GetLength(1))
+            {
+                throw new ArgumentException("Map structure has to be square");
+            }
+
+            #endregion
+
             _cellSize = size;
             _width = mapStructure.GetLength(0);
             _height = mapStructure.GetLength(1);

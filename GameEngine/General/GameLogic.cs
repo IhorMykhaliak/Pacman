@@ -23,6 +23,30 @@ namespace Pacman.GameEngine
 
         public GameLogic(Player pacman, List<Ghost> ghosts, Grid level, float deltaTime)
         {
+            #region Validation
+
+            if (deltaTime < 0.0f)
+            {
+                throw new ArgumentException("Delta time has to be > 0.0f");
+            }
+
+            if (pacman == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (level == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (ghosts == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             this._pacman = pacman;
             this._ghosts = ghosts;
             this._level = level;
@@ -33,11 +57,11 @@ namespace Pacman.GameEngine
 
         #region Events
 
-        public event Action PacmanDied;
+        public event EventHandler<EventArgs> PacmanDied;
 
-        public event Action<Ghost> GhostDied;
+        public event EventHandler<GhostEventArgs> GhostDied;
 
-        public event Action PlayerWin;
+        public event EventHandler<EventArgs> PlayerWin;
 
         #endregion
 
@@ -64,7 +88,7 @@ namespace Pacman.GameEngine
         {
             if (PlayerWin != null && IsPlayerWinner())
             {
-                PlayerWin();
+                PlayerWin(this, EventArgs.Empty);
             }
         }
 
@@ -100,7 +124,7 @@ namespace Pacman.GameEngine
         {
             if (PacmanDied != null)
             {
-                PacmanDied();
+                PacmanDied(this, EventArgs.Empty);
             }
         }
 
@@ -115,18 +139,36 @@ namespace Pacman.GameEngine
 
         public void GhostDie(Ghost ghost)
         {
+            #region Validation
+
+            if (ghost == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             ghost.SetX(ghost.HomeCell.GetX() + 1);
             ghost.SetY(ghost.HomeCell.GetY() + 1);
             ghost.Direction = Direction.None;
             ghost.TargetCell = ghost.CurrentCell();
             if (GhostDied != null)
             {
-                GhostDied(ghost);
+                GhostDied(this, new GhostEventArgs(ghost));
             }
         }
 
         public void GhostCollisionCheck(Ghost ghost)
         {
+            #region Validation
+
+            if (ghost == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             if (_pacman.CurrentCell() == ghost.CurrentCell())
             {
                 if (ghost.Behaviour != Behaviour.Frightened)
@@ -142,6 +184,15 @@ namespace Pacman.GameEngine
 
         public void GhostBehaviourCheck(Ghost ghost)
         {
+            #region Validation
+
+            if (ghost == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             switch (ghost.Behaviour)
             {
                 case Behaviour.Patrol: GhostPatroling(ghost);
@@ -186,6 +237,20 @@ namespace Pacman.GameEngine
         {
             ghost.ReturnTime -= _deltaTime;
             ghost.DoReturning();
+        }
+
+        #endregion
+
+        #region GhostEventArgs
+
+        public class GhostEventArgs : EventArgs
+        {
+            public Ghost Ghost { get; set; }
+
+            public GhostEventArgs(Ghost ghost)
+            {
+                Ghost = ghost;
+            }
         }
 
         #endregion

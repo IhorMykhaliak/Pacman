@@ -274,6 +274,15 @@ namespace Pacman.GameEngine
 
         private void FollowPath(List<Cell> path)
         {
+            #region Validation
+
+            if (path == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             if (_pathIterator < path.Count && _pathIterator > -1)
             {
                 if (MoveTo(path.ElementAt(_pathIterator)))
@@ -285,6 +294,15 @@ namespace Pacman.GameEngine
 
         private bool MoveTo(Cell cell)
         {
+            #region Validation
+
+            if (cell == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             TrySlowerSpeed();
             UpdateDirection(cell);
 
@@ -339,6 +357,15 @@ namespace Pacman.GameEngine
 
         public void UpdateDirection(Cell other)
         {
+            #region Validation
+
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             TryDirectionUp(other);
 
             TryDirectionDown(other);
@@ -400,6 +427,15 @@ namespace Pacman.GameEngine
 
         public void UpdateRunPath(Cell randomCell)
         {
+            #region Validation
+
+            if (randomCell == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            #endregion
+
             List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), randomCell, _level.Map);
             PathIterator = 0;
 
