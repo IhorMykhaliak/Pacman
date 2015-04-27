@@ -42,6 +42,8 @@ namespace Pacman.GameEngine
 
         protected Player _pacman;
 
+        protected IPathfindingAlgorithm _algorithm;
+
         #endregion
 
         #region Properties
@@ -210,6 +212,14 @@ namespace Pacman.GameEngine
             }
         }
 
+        public IPathfindingAlgorithm Algorithm
+        {
+            get
+            {
+                return _algorithm;
+            }
+        }
+
         #endregion
 
         #region Initialize
@@ -223,6 +233,8 @@ namespace Pacman.GameEngine
             _chaseTime = chaseTime;
             _returnTime = returnTime;
             _chasePath = new List<Cell>();
+
+            _algorithm = new AStarAlgorithm();
         }
 
         public Ghost(Grid grid, int x, int y, float size)
@@ -436,7 +448,7 @@ namespace Pacman.GameEngine
 
             #endregion
 
-            List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), randomCell, _level.Map);
+            List<Cell> bestPath = _algorithm.CalculatePath(CurrentCell(), randomCell, _level.Map);
             PathIterator = 0;
 
             if (bestPath.Count >= runPathLength)
@@ -453,7 +465,7 @@ namespace Pacman.GameEngine
 
         public virtual void UpdateChasePath()
         {
-            List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), CalculateTargetCell(), _level.Map);
+            List<Cell> bestPath = _algorithm.CalculatePath(CurrentCell(), CalculateTargetCell(), _level.Map);
             _pathIterator = 0;
 
             SelectChasePath(bestPath);
@@ -469,7 +481,7 @@ namespace Pacman.GameEngine
             }
             else
             {
-                _returnPath = AStarAlgorithm.CalculatePath(CurrentCell(), _startCell, _level.Map);
+                _returnPath = _algorithm.CalculatePath(CurrentCell(), _startCell, _level.Map);
                 _behaviour = Behaviour.Return;
             }
         }

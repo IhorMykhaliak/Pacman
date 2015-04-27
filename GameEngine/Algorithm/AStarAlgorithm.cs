@@ -4,87 +4,87 @@ using System.Linq;
 
 namespace Pacman.GameEngine
 {
-    public static class AStarAlgorithm
+    public class AStarAlgorithm : IPathfindingAlgorithm
     {
         #region Fields
 
-        private static Cell start;
-        private static Cell end;
-        private static Cell[,] grid;
-        private static List<Cell> openedList;
-        private static List<Cell> closedList;
+        private Cell _start;
+        private Cell _end;
+        private Cell[,] _grid;
+        private List<Cell> _openedList;
+        private List<Cell> _closedList;
 
         #endregion
 
         #region Calculation
 
-        public static List<Cell> CalculatePath(Cell startCell, Cell endCell, Cell[,] levelGrid)
+        public List<Cell> CalculatePath(Cell startCell, Cell endCell, Cell[,] levelGrid)
         {
             Cell currentCell;
             List<Cell> adjacenedCells;
 
-            start = startCell;
-            end = endCell;
-            grid = levelGrid;
+            _start = startCell;
+            _end = endCell;
+            _grid = levelGrid;
 
-            openedList = new List<Cell>();
-            closedList = new List<Cell>();
+            _openedList = new List<Cell>();
+            _closedList = new List<Cell>();
 
-            openedList.Add(start);
+            _openedList.Add(_start);
 
-            while (!openedList.Contains(end))
+            while (!_openedList.Contains(_end))
             {
-                if (openedList.Count == 0)
+                if (_openedList.Count == 0)
                 {
                     break;
                 }
 
                 currentCell = GetBestCell();
 
-                if (!closedList.Contains(currentCell))
+                if (!_closedList.Contains(currentCell))
                 {
-                    closedList.Add(currentCell);
+                    _closedList.Add(currentCell);
                 }
 
-                openedList.Remove(currentCell);
+                _openedList.Remove(currentCell);
 
                 adjacenedCells = AdjacenedCellsCheck(currentCell);
-                openedList.AddRange(adjacenedCells);
+                _openedList.AddRange(adjacenedCells);
             }
 
             return GetResultPath();
         }
 
-        private static List<Cell> GetResultPath()
+        private List<Cell> GetResultPath()
         {
-            Cell temp = end;
+            Cell temp = _end;
             List<Cell> _resultPath = new List<Cell>();
-            while (temp != start)
+            while (temp != _start)
             {
                 _resultPath.Add(temp);
                 temp = temp.Parent;
             }
 
-            _resultPath.Add(start);
+            _resultPath.Add(_start);
             _resultPath.Reverse();
 
             return _resultPath;
         }
 
-        private static Cell GetBestCell()
+        private Cell GetBestCell()
         {
             Cell bestCell;
             int minHeuristics;
 
-            foreach (var c in openedList)
+            foreach (var c in _openedList)
             {
-                c.ManhattanHeuristics = CalculateManhattanHeuristics(c, end);
+                c.ManhattanHeuristics = CalculateManhattanHeuristics(c, _end);
             }
 
-            bestCell = openedList.ElementAt(0);
-            minHeuristics = openedList.ElementAt(0).ManhattanHeuristics;
+            bestCell = _openedList.ElementAt(0);
+            minHeuristics = _openedList.ElementAt(0).ManhattanHeuristics;
 
-            foreach (var c in openedList)
+            foreach (var c in _openedList)
             {
                 if (c.ManhattanHeuristics < minHeuristics)
                 {
@@ -96,7 +96,7 @@ namespace Pacman.GameEngine
             return bestCell;
         }
 
-        private static int CalculateManhattanHeuristics(Cell cell1, Cell cell2)
+        private int CalculateManhattanHeuristics(Cell cell1, Cell cell2)
         {
             return Math.Abs(cell1.GetX() - cell2.GetX()) + Math.Abs(cell1.GetY() - cell2.GetY());
         }
@@ -105,7 +105,7 @@ namespace Pacman.GameEngine
 
         #region Check adjacened cells
 
-        private static List<Cell> AdjacenedCellsCheck(Cell cell)
+        private List<Cell> AdjacenedCellsCheck(Cell cell)
         {
             List<Cell> adjacenedCells = new List<Cell>();
 
@@ -120,14 +120,14 @@ namespace Pacman.GameEngine
             return adjacenedCells;
         }
 
-        private static void CheckTopCell(Cell cell, ref List<Cell> adjacenedCells)
+        private void CheckTopCell(Cell cell, ref List<Cell> adjacenedCells)
         {
             Cell topCell;
 
             if (cell.GetY() - 1 > 0)
             {
-                topCell = grid[cell.GetX(), cell.GetY() - 1];
-                if (!topCell.IsWall() && !closedList.Contains(topCell))
+                topCell = _grid[cell.GetX(), cell.GetY() - 1];
+                if (!topCell.IsWall() && !_closedList.Contains(topCell))
                 {
                     topCell.Parent = cell;
                     adjacenedCells.Add(topCell);
@@ -135,14 +135,14 @@ namespace Pacman.GameEngine
             }
         }
 
-        private static void CheckBottomCell(Cell cell, ref List<Cell> adjacenedCells)
+        private void CheckBottomCell(Cell cell, ref List<Cell> adjacenedCells)
         {
             Cell bottomCell;
 
-            if (cell.GetY() < grid.GetLength(0))
+            if (cell.GetY() < _grid.GetLength(0))
             {
-                bottomCell = grid[cell.GetX(), cell.GetY() + 1];
-                if (!bottomCell.IsWall() && !closedList.Contains(bottomCell))
+                bottomCell = _grid[cell.GetX(), cell.GetY() + 1];
+                if (!bottomCell.IsWall() && !_closedList.Contains(bottomCell))
                 {
                     bottomCell.Parent = cell;
                     adjacenedCells.Add(bottomCell);
@@ -150,14 +150,14 @@ namespace Pacman.GameEngine
             }
         }
 
-        private static void CheckLeftCell(Cell cell, ref List<Cell> adjacenedCells)
+        private void CheckLeftCell(Cell cell, ref List<Cell> adjacenedCells)
         {
             Cell leftCell;
 
             if (cell.GetX() > 0)
             {
-                leftCell = grid[cell.GetX() - 1, cell.GetY()];
-                if (!leftCell.IsWall() && !closedList.Contains(leftCell))
+                leftCell = _grid[cell.GetX() - 1, cell.GetY()];
+                if (!leftCell.IsWall() && !_closedList.Contains(leftCell))
                 {
                     leftCell.Parent = cell;
                     adjacenedCells.Add(leftCell);
@@ -165,14 +165,14 @@ namespace Pacman.GameEngine
             }
         }
 
-        private static void CheckRightCell(Cell cell, ref List<Cell> adjacenedCells)
+        private void CheckRightCell(Cell cell, ref List<Cell> adjacenedCells)
         {
             Cell rightCell;
 
-            if (cell.GetX() < grid.GetLength(1) - 1)
+            if (cell.GetX() < _grid.GetLength(1) - 1)
             {
-                rightCell = grid[cell.GetX() + 1, cell.GetY()];
-                if (!rightCell.IsWall() && !closedList.Contains(rightCell))
+                rightCell = _grid[cell.GetX() + 1, cell.GetY()];
+                if (!rightCell.IsWall() && !_closedList.Contains(rightCell))
                 {
                     rightCell.Parent = cell;
                     adjacenedCells.Add(rightCell);

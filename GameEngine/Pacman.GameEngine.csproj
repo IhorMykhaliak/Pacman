@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\AStarAlgorithm.cs" />
+    <Compile Include="Algorithm\Interface\IPathfindingAlgorithm.cs" />
     <Compile Include="General\GameLogic.cs" />
     <Compile Include="Players\Ghosts\Blinky.cs" />
     <Compile Include="GameObjects\BoundingSquare.cs" />

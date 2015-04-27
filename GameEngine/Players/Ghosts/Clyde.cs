@@ -16,9 +16,9 @@ namespace Pacman.GameEngine
 
         public override void InitializePatrolPath()
         {
-            PatrolPath = AStarAlgorithm.CalculatePath(StartCell, _level.Map[8, 27], _level.Map);
-            PatrolPath.AddRange(AStarAlgorithm.CalculatePath(_level.Map[8, 27], _level.Map[12, 30], _level.Map));
-            PatrolPath.AddRange(AStarAlgorithm.CalculatePath(_level.Map[12, 30], StartCell, _level.Map));
+            PatrolPath = _algorithm.CalculatePath(StartCell, _level.Map[8, 27], _level.Map);
+            PatrolPath.AddRange(_algorithm.CalculatePath(_level.Map[8, 27], _level.Map[12, 30], _level.Map));
+            PatrolPath.AddRange(_algorithm.CalculatePath(_level.Map[12, 30], StartCell, _level.Map));
         }
 
         #endregion
@@ -45,7 +45,7 @@ namespace Pacman.GameEngine
 
         public void UseStupidPath()
         {
-            List<Cell> bestPath = AStarAlgorithm.CalculatePath(CurrentCell(), _level.GetRandomFreeCell(), _level.Map);
+            List<Cell> bestPath = _algorithm.CalculatePath(CurrentCell(), _level.GetRandomFreeCell(), _level.Map);
             _pathIterator = 0;
 
             SelectChasePath(bestPath);

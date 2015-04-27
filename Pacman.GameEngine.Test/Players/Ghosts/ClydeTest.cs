@@ -17,7 +17,9 @@ namespace Pacman.GameEngine.Test.Players.Ghosts
             clyde.SetY(4);
             pacman.SetX(28);
             pacman.SetY(3);
-            List<Cell> path = AStarAlgorithm.CalculatePath(clyde.CurrentCell(), pacman.CurrentCell(), game.Level.Map).GetRange(0, 3);
+
+            IPathfindingAlgorithm algorithm = new AStarAlgorithm();
+            List<Cell> path = algorithm.CalculatePath(clyde.CurrentCell(), pacman.CurrentCell(), game.Level.Map).GetRange(0, 3);
 
             clyde.UpdateChasePath();
 
@@ -34,7 +36,8 @@ namespace Pacman.GameEngine.Test.Players.Ghosts
             clyde.SetY(4);
             pacman.SetX(28);
             pacman.SetY(3);
-            List<Cell> path = AStarAlgorithm.CalculatePath(clyde.CurrentCell(), pacman.CurrentCell(), game.Level.Map).GetRange(0, 3);
+            IPathfindingAlgorithm algorithm = new AStarAlgorithm();
+            List<Cell> path = algorithm.CalculatePath(clyde.CurrentCell(), pacman.CurrentCell(), game.Level.Map).GetRange(0, 3);
 
             clyde.UseStupidPath();
 

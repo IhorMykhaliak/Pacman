@@ -144,7 +144,7 @@ namespace Pacman.GameEngine
 
             foreach (Ghost ghost in _ghosts)
             {
-                ghost.ReturnPath = AStarAlgorithm.CalculatePath(ghost.CurrentCell(), ghost.StartCell, _level.Map);
+                ghost.ReturnPath = ghost.Algorithm.CalculatePath(ghost.CurrentCell(), ghost.StartCell, _level.Map);
                 ghost.Behaviour = Behaviour.Return;
                 ghost.InitializePatrolPath();
             }

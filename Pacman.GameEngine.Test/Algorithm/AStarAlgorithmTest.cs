@@ -41,7 +41,8 @@ namespace Pacman.GameEngine.Test
                 map[27, 2]
             };
 
-            List<Cell> path = AStarAlgorithm.CalculatePath(start, end, map);
+            IPathfindingAlgorithm algorithm = new AStarAlgorithm();
+            List<Cell> path = algorithm.CalculatePath(start, end, map);
 
             CollectionAssert.AreEqual(expectedPath, path);
         }
@@ -77,7 +78,8 @@ namespace Pacman.GameEngine.Test
                 map[27, 27]
             };
 
-            List<Cell> path = AStarAlgorithm.CalculatePath(start, end, map);
+            IPathfindingAlgorithm algorithm = new AStarAlgorithm();
+            List<Cell> path = algorithm.CalculatePath(start, end, map);
 
             CollectionAssert.AllItemsAreNotNull(path);
             CollectionAssert.AllItemsAreUnique(path);
@@ -118,7 +120,8 @@ namespace Pacman.GameEngine.Test
                 map[27, 2]
             };
 
-            List<Cell> path = AStarAlgorithm.CalculatePath(start, end, map);
+            IPathfindingAlgorithm algorithm = new AStarAlgorithm();
+            List<Cell> path = algorithm.CalculatePath(start, end, map);
 
             CollectionAssert.AllItemsAreNotNull(path);
             CollectionAssert.AllItemsAreUnique(path);

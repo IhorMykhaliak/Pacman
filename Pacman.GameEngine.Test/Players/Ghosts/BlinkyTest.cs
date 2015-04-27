@@ -17,7 +17,8 @@ namespace Pacman.GameEngine.Test.Players.Ghosts
 
             blinky.UpdateChasePath();
 
-            List<Cell> path = AStarAlgorithm.CalculatePath(blinky.CurrentCell(), game.Level.Map[33, 15], game.Level.Map);
+            IPathfindingAlgorithm algorithm = new AStarAlgorithm();
+            List<Cell> path = algorithm.CalculatePath(blinky.CurrentCell(), game.Level.Map[33, 15], game.Level.Map);
 
             Assert.AreEqual(blinky.TargetCell, game.Level.Map[0, 15]);
             Assert.IsFalse(pacman.IsPassedRightTunnel);
@@ -34,7 +35,8 @@ namespace Pacman.GameEngine.Test.Players.Ghosts
 
             blinky.UpdateChasePath();
 
-            List<Cell> path = AStarAlgorithm.CalculatePath(blinky.CurrentCell(), game.Level.Map[0, 15], game.Level.Map);
+            IPathfindingAlgorithm algorithm = new AStarAlgorithm();
+            List<Cell> path = algorithm.CalculatePath(blinky.CurrentCell(), game.Level.Map[0, 15], game.Level.Map);
 
             Assert.AreEqual(blinky.TargetCell, game.Level.Map[32, 15]);
             Assert.IsFalse(pacman.IsPassedLeftTunnel);

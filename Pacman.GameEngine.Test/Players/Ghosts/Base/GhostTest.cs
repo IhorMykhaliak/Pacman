@@ -205,7 +205,9 @@ namespace Pacman.GameEngine.Test.Players.Ghosts.Base
             ghost.SetY(ghost.StartCell.GetY());
             ghost.Behaviour = Behaviour.Chase;
             ghost.ChaseTime = 1.0f;
-            ghost.ChasePath = AStarAlgorithm.CalculatePath(ghost.CurrentCell(), game.Player.CurrentCell(), game.Level.Map);
+            IPathfindingAlgorithm algorithm = new AStarAlgorithm();
+
+            ghost.ChasePath = algorithm.CalculatePath(ghost.CurrentCell(), game.Player.CurrentCell(), game.Level.Map);
 
             for (int i = 0; i < 10; i++)
             {
@@ -231,8 +233,8 @@ namespace Pacman.GameEngine.Test.Players.Ghosts.Base
             {
                 ghost.DoChasing();
             }
-
-            CollectionAssert.AreEqual(ghost.ReturnPath, AStarAlgorithm.CalculatePath(ghost.CurrentCell(), ghost.StartCell, game.Level.Map));
+            IPathfindingAlgorithm algorithm = new AStarAlgorithm();
+            CollectionAssert.AreEqual(ghost.ReturnPath, algorithm.CalculatePath(ghost.CurrentCell(), ghost.StartCell, game.Level.Map));
             Assert.AreEqual(ghost.Behaviour, Behaviour.Return);
         }
 

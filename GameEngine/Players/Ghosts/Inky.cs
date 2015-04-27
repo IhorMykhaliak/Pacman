@@ -37,9 +37,9 @@
 
         public override void InitializePatrolPath()
         {
-            PatrolPath = AStarAlgorithm.CalculatePath(StartCell, _level.Map[21, 27], _level.Map);
-            PatrolPath.AddRange(AStarAlgorithm.CalculatePath(_level.Map[21, 27], _level.Map[23, 30], _level.Map));
-            PatrolPath.AddRange(AStarAlgorithm.CalculatePath(_level.Map[23, 30], StartCell, _level.Map));
+            PatrolPath = _algorithm.CalculatePath(StartCell, _level.Map[21, 27], _level.Map);
+            PatrolPath.AddRange(_algorithm.CalculatePath(_level.Map[21, 27], _level.Map[23, 30], _level.Map));
+            PatrolPath.AddRange(_algorithm.CalculatePath(_level.Map[23, 30], StartCell, _level.Map));
         }
 
         #endregion
