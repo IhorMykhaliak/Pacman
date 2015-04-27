@@ -55,6 +55,7 @@ namespace Pacman.GameEngine.Test.Players.Base
             Ghost ghost = game.Ghosts[0];
 
             ghost.Direction = Direction.Up;
+            ghost.PendingDirection = Direction.Right;
             for (int i = 0; i < 10; i++)
             {
                 ghost.Move();
@@ -63,8 +64,8 @@ namespace Pacman.GameEngine.Test.Players.Base
             Cell cell = ghost.CurrentCell();
 
             Assert.IsTrue(cell.IsNextTo(ghost.HomeCell));
-            Assert.AreEqual(cell.GetY() - ghost.HomeCell.GetY(), -1);
-            Assert.AreEqual(cell.GetX(), ghost.HomeCell.GetX());
+            Assert.AreEqual(cell.GetY() - ghost.HomeCell.GetY(), 0);
+            Assert.AreEqual(cell.GetX() - 1, ghost.HomeCell.GetX());
         }
 
         [TestMethod]
@@ -74,6 +75,7 @@ namespace Pacman.GameEngine.Test.Players.Base
             Ghost ghost = game.Ghosts[0];
 
             ghost.Direction = Direction.Down;
+            ghost.PendingDirection = Direction.Left;
             for (int i = 0; i < 10; i++)
             {
                 ghost.Move();
@@ -82,8 +84,8 @@ namespace Pacman.GameEngine.Test.Players.Base
             Cell cell = ghost.CurrentCell();
 
             Assert.IsTrue(cell.IsNextTo(ghost.HomeCell));
-            Assert.AreEqual(cell.GetY() - ghost.HomeCell.GetY(), 1);
-            Assert.AreEqual(cell.GetX(), ghost.HomeCell.GetX());
+            Assert.AreEqual(cell.GetY() - ghost.HomeCell.GetY(), 0);
+            Assert.AreEqual(cell.GetX() + 1, ghost.HomeCell.GetX());
         }
 
         [TestMethod]
@@ -93,6 +95,8 @@ namespace Pacman.GameEngine.Test.Players.Base
             Ghost ghost = game.Ghosts[0];
 
             ghost.Direction = Direction.Left;
+            ghost.PendingDirection = Direction.Up;
+            ghost.PreviousDirection = Direction.Right;
             for (int i = 0; i < 10; i++)
             {
                 ghost.Move();
@@ -101,8 +105,9 @@ namespace Pacman.GameEngine.Test.Players.Base
             Cell cell = ghost.CurrentCell();
 
             Assert.IsTrue(cell.IsNextTo(ghost.HomeCell));
-            Assert.AreEqual(cell.GetY(), ghost.HomeCell.GetY());
-            Assert.AreEqual(cell.GetX() - ghost.HomeCell.GetX(), -1);
+            Assert.AreEqual(cell.GetY() + 1, ghost.HomeCell.GetY());
+            Assert.AreEqual(cell.GetX() - ghost.HomeCell.GetX(), 0);
+            Assert.AreEqual(ghost.PreviousDirection, Direction.None);
         }
 
         [TestMethod]
@@ -112,6 +117,8 @@ namespace Pacman.GameEngine.Test.Players.Base
             Ghost ghost = game.Ghosts[0];
 
             ghost.Direction = Direction.Right;
+            ghost.PendingDirection = Direction.Up;
+            ghost.Speed = 2.0f;
             for (int i = 0; i < 10; i++)
             {
                 ghost.Move();
@@ -120,8 +127,9 @@ namespace Pacman.GameEngine.Test.Players.Base
             Cell cell = ghost.CurrentCell();
 
             Assert.IsTrue(cell.IsNextTo(ghost.HomeCell));
-            Assert.AreEqual(cell.GetY(), ghost.HomeCell.GetY());
-            Assert.AreEqual(cell.GetX() - ghost.HomeCell.GetX(), 1);
+            Assert.AreEqual(cell.GetY() + 1, ghost.HomeCell.GetY());
+            Assert.AreEqual(cell.GetX() - ghost.HomeCell.GetX(), 0);
+            Assert.AreEqual(ghost.Speed, 2.0f);
         }
 
         [TestMethod]
@@ -165,6 +173,19 @@ namespace Pacman.GameEngine.Test.Players.Base
             Player pacman = game.Player;
             Cell origin = pacman.CurrentCell();
 
+            pacman.Move();
+
+            Assert.AreEqual(origin, pacman.CurrentCell());
+        }
+
+        [TestMethod]
+        public void TestCanMoveDownFailed()
+        {
+            Game game = new Game();
+            Player pacman = game.Player;
+            Cell origin = pacman.CurrentCell();
+
+            pacman.Direction = Direction.Down;
             pacman.Move();
 
             Assert.AreEqual(origin, pacman.CurrentCell());

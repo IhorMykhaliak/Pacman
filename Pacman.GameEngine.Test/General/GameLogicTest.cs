@@ -80,6 +80,23 @@ namespace Pacman.GameEngine.Test
             }
         }
 
+        [TestMethod]
+        public void TestPlayerDie()
+        {
+            Game game = new Game();
+            GameLogic logic = game.Logic;
+            Player pacman = game.Player;
+            List<Ghost> ghosts = game.Ghosts;
+            pacman.PowerUpTime = -1.0f;
+            pacman.IsPoweredUp = false;
+            ghosts[0].SetX(17);
+            ghosts[0].SetY(25);
+
+            logic.GhostCollisionCheck(ghosts[0]);
+
+            Assert.IsFalse(game.MainTimer.Enabled);
+        }
+
         #endregion
 
         #region Ghosts behaviour

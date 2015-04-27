@@ -16,6 +16,7 @@ namespace Pacman.ConsoleUI
         {
             try
             {
+                Console.WindowHeight *= 2;
                 Console.CursorVisible = false;
                 _game = new Game();
                 GameSubscribe();
@@ -60,7 +61,7 @@ namespace Pacman.ConsoleUI
                     break;
                 case ConsoleKey.RightArrow: _game.Player.Direction = Direction.Right;
                     break;
-                case ConsoleKey.Spacebar: _game.PauseGame();
+                case ConsoleKey.Spacebar: _game.OnPauseGame();
                     break;
                 case ConsoleKey.R: Restart(null, EventArgs.Empty);
                     break;
@@ -103,7 +104,7 @@ namespace Pacman.ConsoleUI
 
         private static void PlayerWin(object sender, EventArgs e)
         {
-            _game.PauseGame();
+            _game.OnPauseGame();
             Console.Clear();
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("You won !");
@@ -111,7 +112,7 @@ namespace Pacman.ConsoleUI
 
         private static void PlayerDie(object sender, EventArgs e)
         {
-            _game.PauseGame();
+            _game.OnPauseGame();
             Console.Clear();
             Console.SetCursorPosition(0, 0);
         }
@@ -133,10 +134,7 @@ namespace Pacman.ConsoleUI
         private static void DisplayMenu()
         {
             Console.Clear();
-            Console.WriteLine("PLEASE OPEN IN BIG CONSOLE WINDOW !!!");
-            Console.WriteLine();
-            Console.WriteLine("----------------------------------------------------------");
-            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Press -Space- to play/pause.");
             Console.WriteLine("Use -arrow keys- to move pacman.");
             Console.WriteLine("If you die or just want to try it out press -R- to restart.");

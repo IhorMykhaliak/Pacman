@@ -61,7 +61,7 @@ namespace Pacman.DesktopUI
                     break;
                 case Keys.Right: _game.Player.Direction = Direction.Right;
                     break;
-                case Keys.Space: _game.PauseGame();
+                case Keys.Space: _game.OnPauseGame();
                     break;
                 case Keys.R: OnRestart(this, EventArgs.Empty);
                     break;
@@ -100,15 +100,15 @@ namespace Pacman.DesktopUI
         private void OnWin(object sender, EventArgs e)
         {
             OnRestart(this, EventArgs.Empty);
-            _game.PauseGame();
+            _game.OnPauseGame();
             MessageBox.Show("You won !");
         }
 
         private void OnDie(object sender, EventArgs e)
         {
-            _game.PauseGame();
+            _game.OnPauseGame();
             OnRestart(this, EventArgs.Empty);
-            _game.PauseGame();
+            _game.OnPauseGame();
             MessageBox.Show("You died !");
         }
 

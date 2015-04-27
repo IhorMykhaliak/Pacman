@@ -157,7 +157,7 @@ namespace Pacman.GameEngine
             _mainTimer = new Timer();
             _mainTimer.Interval = 10;
             _mainTimer.Enabled = false;
-            _mainTimer.Elapsed += new ElapsedEventHandler(MainTimerTick);
+            _mainTimer.Elapsed += new ElapsedEventHandler(OnMainTimerTick);
         }
 
         private void InitializeLogic()
@@ -165,9 +165,9 @@ namespace Pacman.GameEngine
             _deltaTime = ((float)(_mainTimer.Interval) / 1000.0f);
 
             _gameLogic = new GameLogic(_pacman, _ghosts, _level, _deltaTime);
-            _gameLogic.PacmanDied += PacmanDie;
+            _gameLogic.PacmanDied += OnPacmanDie;
             _gameLogic.GhostDied += OnGhostDie;
-            _gameLogic.PlayerWin += PlayerWin;
+            _gameLogic.PlayerWin += OnPlayerWin;
         }
 
         private void InitializeGame()
@@ -213,7 +213,7 @@ namespace Pacman.GameEngine
 
         #region Event handlers
 
-        public void MainTimerTick(object sender, EventArgs e)
+        public void OnMainTimerTick(object sender, EventArgs e)
         {
             // Total time spent
             _elapsedTime += _deltaTime * 1000;
@@ -232,10 +232,10 @@ namespace Pacman.GameEngine
 
             _gameLogic.PacmanWinCheck();
 
-            UpdateGame();
+            OnUpdateGame();
         }
 
-        public void UpdateGame()
+        public void OnUpdateGame()
         {
             if (Update != null)
             {
@@ -243,7 +243,7 @@ namespace Pacman.GameEngine
             }
         }
 
-        public void PauseGame()
+        public void OnPauseGame()
         {
             OnNewGame(); 
 
@@ -256,7 +256,7 @@ namespace Pacman.GameEngine
             }
         }
 
-        public void PlayerWin(object sender, EventArgs e)
+        public void OnPlayerWin(object sender, EventArgs e)
         {
             if (Win != null)
             {
@@ -272,7 +272,7 @@ namespace Pacman.GameEngine
             }
         }
 
-        private void PacmanDie(object sender, EventArgs e)
+        private void OnPacmanDie(object sender, EventArgs e)
         {
             _mainTimer.Stop();
             if (Die != null)
@@ -310,7 +310,7 @@ namespace Pacman.GameEngine
             _pacmanCoins = 0;
             _map = null;
 
-            _mainTimer.Elapsed -= MainTimerTick;
+            _mainTimer.Elapsed -= OnMainTimerTick;
             _mainTimer = null;
 
             _ghosts = null;

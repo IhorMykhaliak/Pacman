@@ -134,7 +134,7 @@ namespace Pacman.GameEngine.Test
         {
             Game game = new Game();
 
-            game.PauseGame();
+            game.OnPauseGame();
 
             Assert.IsFalse(game.IsPaused);
             Assert.IsTrue(game.MainTimer.Enabled);

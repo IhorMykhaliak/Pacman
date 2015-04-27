@@ -4,3 +4,6 @@ C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.SoundHandler\obj\D
 C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.SoundHandler\obj\Debug\Pacman.SoundHandler.csproj.GenerateResource.Cache
 C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.SoundHandler\obj\Debug\Pacman.SoundHandler.dll
 C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.SoundHandler\obj\Debug\Pacman.SoundHandler.pdb
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.SoundHandler\bin\Debug\Pacman.SoundHandler.dll.CodeAnalysisLog.xml
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.SoundHandler\bin\Debug\Pacman.SoundHandler.dll.lastcodeanalysissucceeded
+C:\Mark\Programs\EPAM\INDIVIDUAL PROJECT\Pacman\Pacman\Pacman.SoundHandler\obj\Debug\Pacman.SoundHandler.csprojResolveAssemblyReference.cache

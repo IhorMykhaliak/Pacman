@@ -6,6 +6,22 @@ namespace Pacman.GameEngine.Test.Players.Ghosts.Base
     [TestClass]
     public class GhostTest
     {
+        #region Properties
+
+        [TestMethod]
+        public void TestSetHomeCell()
+        {
+            Game game = new Game();
+            Ghost ghost = game.Ghosts[0];
+
+            ghost.HomeCell = ghost.StartCell;
+
+            Assert.AreEqual(ghost.StartCell.GetX(), ghost.HomeCell.GetX());
+            Assert.AreEqual(ghost.StartCell.GetY(), ghost.HomeCell.GetY());
+        }
+
+        #endregion
+
         #region Movement
 
         [TestMethod]
@@ -221,7 +237,7 @@ namespace Pacman.GameEngine.Test.Players.Ghosts.Base
         }
 
         [TestMethod]
-        public void TestDoReturning()
+        public void TestDoReturning1()
         {
             Game game = new Game();
             Ghost ghost = game.Ghosts[0];
@@ -236,6 +252,21 @@ namespace Pacman.GameEngine.Test.Players.Ghosts.Base
 
             Assert.AreEqual(ghost.CurrentCell().GetX(), 17);
             Assert.AreEqual(ghost.CurrentCell().GetY(), 12);
+        }
+
+        [TestMethod]
+        public void TestDoReturning2()
+        {
+            Game game = new Game();
+            Ghost ghost = game.Ghosts[0];
+
+            ghost.Behaviour = Behaviour.Return;
+            ghost.ReturnTime = - 1.0f;
+
+            ghost.DoReturning();
+
+            Assert.AreEqual(ghost.CurrentCell().GetX(), 17);
+            Assert.AreEqual(ghost.CurrentCell().GetY(), 14);
         }
 
         #endregion
