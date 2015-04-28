@@ -130,7 +130,7 @@ namespace Pacman.GameEngine
             }
 
             #endregion
-
+            // Review IM : варто вказати явно звідки викликається метод : base.GetX(), base.GetY()
             TryPickItem(_level.Map[GetX(), GetY()], ghosts);
         }
 

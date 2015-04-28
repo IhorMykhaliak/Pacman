@@ -18,7 +18,12 @@ $RECYCLE.BIN/
 *.lnk
 
 #Other
-*.exe
+bin
+obj
+TestResults
+ModelingProject1
+*.suo
+*.sln.DotSettings.user
 
 
 # =========================

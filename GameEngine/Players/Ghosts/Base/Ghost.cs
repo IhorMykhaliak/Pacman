@@ -320,6 +320,7 @@ namespace Pacman.GameEngine
 
             if (GetBoundingRect() != cell.GetBoundingRect())
             {
+                // Review IM : base.Move()
                 this.Move();
                 return false;
             }

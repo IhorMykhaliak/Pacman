@@ -349,7 +349,7 @@ namespace Pacman.GameEngine
             xTemp1 = (int)((GetLeft() + _epsilon) / _size);
             xTemp2 = (int)((GetRight() - _epsilon) / _size);
             yTemp = (int)((_yPos / _size) - _epsilon) - 1;
-
+            // Review IM : дужки
             if (xTemp1 >= 0 && xTemp1 < _level.Width &&
                 yTemp >= 0 && yTemp < _level.Height &&
                 xTemp2 >= 0 && xTemp2 < _level.Width)
@@ -370,7 +370,7 @@ namespace Pacman.GameEngine
             xTemp1 = (int)((GetLeft() + _epsilon) / _size);
             xTemp2 = (int)((GetRight() - _epsilon) / _size);
             yTemp = (int)((_yPos / _size) + _epsilon);
-
+            // Review IM : дужки
             if (xTemp1 >= 0 && xTemp1 < _level.Width &&
                 yTemp >= 0 && yTemp < _level.Height &&
                 xTemp2 >= 0 && xTemp2 < _level.Width)
@@ -391,7 +391,7 @@ namespace Pacman.GameEngine
             yTemp1 = (int)((GetTop() + _epsilon) / _size);
             yTemp2 = (int)((GetBottom() - _epsilon) / _size);
             xTemp = (int)((_xPos / _size) - _epsilon);
-
+            // Review IM : дужки
             if (yTemp1 >= 0 && yTemp1 < _level.Height &&
                 xTemp > 0 && xTemp <= _level.Width &&
                 yTemp2 >= 0 && yTemp2 < _level.Height)
@@ -412,7 +412,7 @@ namespace Pacman.GameEngine
             yTemp1 = (int)((GetTop() + _epsilon) / _size);
             yTemp2 = (int)((GetBottom() - _epsilon) / _size);
             xTemp = (int)((_xPos / _size) + _epsilon);
-
+            // Review IM : дужки
             if (yTemp1 >= 0 && yTemp1 < _level.Height &&
                 xTemp >= 0 && xTemp < _level.Width &&
                 yTemp2 >= 0 && yTemp2 < _level.Height)

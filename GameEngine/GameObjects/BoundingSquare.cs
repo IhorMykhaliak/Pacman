@@ -96,6 +96,7 @@ namespace Pacman.GameEngine
 
         public static bool operator ==(BoundingSquare square1, BoundingSquare square2)
         {
+            // Review IM : потрібно ставити дужки : Code Convencion
             return square1.X == square2.X && 
                    square1.Y == square2.Y && 
                    square1.Size == square2.Size;

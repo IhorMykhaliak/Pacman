@@ -20,6 +20,8 @@ namespace Pacman.GameEngine
 
         public List<Cell> CalculatePath(Cell startCell, Cell endCell, Cell[,] levelGrid)
         {
+            // Review IM : Для покращення якості алгоритму варто явно обробляти випадок коли
+            //             statCell == endCell, а не проходити алгоритмом все поле,щоб це дізнатися : General Coding
             Cell currentCell;
             List<Cell> adjacenedCells;
 
@@ -36,6 +38,8 @@ namespace Pacman.GameEngine
             {
                 if (_openedList.Count == 0)
                 {
+                    // Review IM : Якщо логіка гри не передбачає випадку,коли шлях не існує,
+                    //             краще створювати Exception                                : General Coding
                     break;
                 }
 

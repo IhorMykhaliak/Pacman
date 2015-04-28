@@ -181,6 +181,7 @@
 
         private bool IsShiftedInBounds(Cell cell)
         {
+            // Review IM : дужки
             return cell.GetX() + _xShift > 0 &&
                    cell.GetX() + _xShift < _level.Width &&
                    cell.GetY() + _yShift > 0 &&
