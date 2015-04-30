@@ -14,6 +14,9 @@ namespace Pacman.ConsoleUI
 
         static void Main(string[] args)
         {
+            // Review IM : Оскільки в гравця є лише одне життя то виявлено наступний баг : 
+            //             деколи після програшу можна продовжити гру, натиснути кілька разів SPACE !
+            //             
             try
             {
                 Console.WindowHeight *= 2;
