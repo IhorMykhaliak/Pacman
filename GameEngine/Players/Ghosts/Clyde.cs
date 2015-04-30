@@ -33,6 +33,7 @@ namespace Pacman.GameEngine
             yDistance = Math.Abs(GetY() - _pacman.GetY());
             distance = xDistance + yDistance;
 
+            // Review IM : варто використати константне поле
             if (distance > 8)
             {
                 base.UpdateChasePath();
